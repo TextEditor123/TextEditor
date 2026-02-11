@@ -124,5 +124,6 @@
     //
     // A tracked syntax is a start position, a length, and a TrackedSyntaxKind.
     // The start and length are used in the while (remaining > 0) to group the chunks of text that exist on the same line.
+    // The TrackedSyntaxKind is converted to a CSS class via a switch statement.
     // 
 }
