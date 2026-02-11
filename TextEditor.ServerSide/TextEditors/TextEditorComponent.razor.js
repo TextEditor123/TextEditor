@@ -114,4 +114,15 @@
     //       in reverse, until  you find a non '\0' character.
     //     - If the first non '\0' character is '\t',
     //       then you've found a "tab character".
+    //
+    // # syntax highlighting...
+    //
+    // Syntax highlighting will be stored in a "list" of "tracked syntax instances".
+    // A "while (remaining > 0)" algorithm will be used to
+    // apply a css class to a chunk of characters on a line where each chunk is grouped by the span
+    // represented via the "tracked syntax".
+    //
+    // A tracked syntax is a start position, a length, and a TrackedSyntaxKind.
+    // The start and length are used in the while (remaining > 0) to group the chunks of text that exist on the same line.
+    // 
 }
