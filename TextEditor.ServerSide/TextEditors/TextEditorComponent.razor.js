@@ -27,6 +27,14 @@
         // The alternative of lineBreaks means you have to lookup in the "lineBreakPositionList" at
         // index of 'lineIndex - 1' more or less. (there are more "edge cases" involved as well such as the 0th line
         // giving an index of -1, and it just is sort of a headache that seems unnecessary vs tracking 1 additional entry.)
+        //
+        // One last clarification, this is the way I came to define these words after having
+        // dealt with this "lineEnd vs lineBreak 'phenomenon'" first hand.
+        //
+        // Whether other people would agree with me I am not sure.
+        // Essentailly, a lineBreak implies that a line exists after that position, whether that line be length 0 or not.
+        // 
+        // A lineEnding doesn't indicate there exists a line after.
         this.lineEndPositionList = [];
         this.setText(text);
     }
