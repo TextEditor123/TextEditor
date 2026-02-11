@@ -97,4 +97,21 @@
     //
     // # tab support...
     //
+    // A tab character is represented by the following sequence of characters "\t\0\0\0".
+    //
+    // If a user gesture results in a '\0' being targeted, it is expected
+    // that every distinct event would implement a case to support this.
+    //
+    // i.e.: if the user fires the mousemove event,
+    // the support for a '\0' character is as follows:
+    // - Check if the position index of the '\0' is equal to EOF (end of file).
+    //     - If so, the '\0' represents EOF.
+    //     - Else, the '\0' likely represents a "tab character".
+    //     - As of this comment this "likely" is a guarantee,
+    //       but it is expected that such a pattern will be used for inline-hints in the future.
+    //     - The algorithm for determining if you are at a "tab character",
+    //       is to iterate the position index that the '\0' exists at
+    //       in reverse, until  you find a non '\0' character.
+    //     - If the first non '\0' character is '\t',
+    //       then you've found a "tab character".
 }
