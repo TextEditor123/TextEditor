@@ -1,4 +1,14 @@
 ﻿export class TextEditor {
+    // fields...
+    //
+    // NOTE: clear() needs to be updated such that a component can
+    // be re-used for more than one text file.
+    //
+    // This isn't to say that tabs can't exist,
+    // but instead that if you elect for a "single tab editor",
+    // you can open various files in that "single tab editor" albeit only one at a time.
+    //
+    // =========
     text;
     lineEndPositionList;
 
@@ -45,11 +55,16 @@
     }
 
     setText(text) {
+        this.clear();
         this.text = text;
         for (let i = 0; i < this.text.length; i++) {
             if (this.text[i] == '\n') {
                 this.lineEndPositionList.push(i);
             }
         }
+    }
+
+    clear() {
+        this.lineEndPositionList = [];
     }
 }
