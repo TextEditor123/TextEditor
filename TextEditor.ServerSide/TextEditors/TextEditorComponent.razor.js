@@ -131,4 +131,8 @@
     // because if you copy a file path in Visual Studio, you cannot paste that path as text.
     // So presumably a check for the some prefix is being used.
     //
+    // ... targeting via javascript then low freq gesture => blazor
+    // i.e. the text editor cursor should exist solely in JavaScript.
+    // you do this by having Blazor render an empty div, then you just let JavaScript go wild and do whatever it wants to that div.
+    // Since the div was rendered as empty, then Blazor diff won't touch it.
 }
