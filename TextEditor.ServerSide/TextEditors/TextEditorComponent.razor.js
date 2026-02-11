@@ -17,7 +17,7 @@
         // Since you already have the likely unoptimized solution, I think you might as well add 1 extra entry
         // in the list that represents the EOF, i.e.: you are storing the lineEndings.
         //
-        // The alternate is to store the lineBreaks, and while this isn't the most complicated thing in the world
+        // The alternative is to store the lineBreaks, and while this isn't the most complicated thing in the world
         // you end up with the lineIndex NOT corresponding to the same index for the "lineEndPositionList".
         //
         // The wording is a bit muddied on my end. But the end of the first line is asking what
@@ -33,8 +33,9 @@
         //
         // Whether other people would agree with me I am not sure.
         // Essentailly, a lineBreak implies that a line exists after that position, whether that line be length 0 or not.
-        // 
+        //
         // A lineEnding doesn't indicate there exists a line after.
+        //
         this.lineEndPositionList = [];
         this.setText(text);
     }
