@@ -15,8 +15,12 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
 
-    public void SetText(string text)
+    public async Task SetTextAsync(string text)
     {
+        if (_myJsObjectInstance is not null)
+        {
+            await _myJsObjectInstance.InvokeAsync<string>("setText", text);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

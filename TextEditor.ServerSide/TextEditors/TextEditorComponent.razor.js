@@ -1,9 +1,46 @@
 ﻿export class TextEditor {
+    text;
+    lineEndPositionList;
+
     constructor(text) {
-        this.text = text;
+        // It is likely a bad idea to structure a text editor with a list of line end positions like this.
+        // I've made a lot of progress though optimizing other parts of the text editor, so I need to just get those typed up and working.
+        // And just as I did with those optimizations, when the time comes I'll optimize this list.
+        //
+        // The issue is that the cost of this is 1 to 1 tied to the count of line endings. And that can be decently expensive quite fast.
+        // If you're going to go down this route, the question of whether you are storing:
+        // - lineEndings
+        // OR
+        // - lineBreaks
+        // ... comes into play.
+        //
+        // Since you already have the likely unoptimized solution, I think you might as well add 1 extra entry
+        // in the list that represents the EOF, i.e.: you are storing the lineEndings.
+        //
+        // The alternate is to store the lineBreaks, and while this isn't the most complicated thing in the world
+        // you end up with the lineIndex NOT corresponding to the same index for the "lineEndPositionList".
+        //
+        // The wording is a bit muddied on my end. But the end of the first line is asking what
+        // the end of the 0th index line is. You look this up in the this.lineEndPositionList with an index of 0
+        // and this is somewhat nice.
+        //
+        // The alternative of lineBreaks means you have to lookup in the "lineBreakPositionList" at
+        // index of 'lineIndex - 1' more or less. (there are more "edge cases" involved as well such as the 0th line
+        // giving an index of -1, and it just is sort of a headache that seems unnecessary vs tracking 1 additional entry.)
+        this.lineEndPositionList = [];
+        this.setText(text);
     }
 
     getText() {
         return this.text;
+    }
+
+    setText(text) {
+        this.text = text;
+        for (let i = 0; i < this.text.length; i++) {
+            if (this.text[i] == '\n') {
+                this.lineEndPositionList.push(i);
+            }
+        }
     }
 }
