@@ -12,7 +12,8 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
 
-    private IJSObjectReference? module;
+    private IJSObjectReference? _module;
+    private IJSObjectReference? _myJsObjectInstance;
 
     public void SetText(string text)
     {
@@ -22,20 +23,27 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
     {
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import",
-                "./TextEditors/TextEditorComponent.razor.js");
-
-            var a = await module.InvokeAsync<string>("GreetingHelpers.sayHello");
+            // Load the isolated JS module
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./TextEditors/TextEditorComponent.razor.js");
+            _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor", "aaa");
+            var a = await _myJsObjectInstance.InvokeAsync<string>("getText");
         }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (module is not null)
+        if (_module is not null || _myJsObjectInstance is not null)
         {
             try
             {
-                await module.DisposeAsync();
+                if (_myJsObjectInstance is not null)
+                {
+                    await _myJsObjectInstance.DisposeAsync(); // Dispose the JS object instance
+                }
+                if (_module is not null)
+                {
+                    await _module.DisposeAsync(); // Dispose the module reference
+                }
             }
             catch (JSDisconnectedException) // only necessary for server side applications
             {
