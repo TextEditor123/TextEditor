@@ -5,7 +5,7 @@ namespace TextEditor.ServerSide.TextEditors;
 
 /// <summary>
 /// Use '@ref="_textEditorComponent"',
-/// then invoke the various public methods with the UI synchronization context.
+/// then invoke the various public methods with the UI synchronization context (or ComponentBase.InvokeAsync(...), etc...).
 /// </summary>
 public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
 {
@@ -16,7 +16,6 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
 
     public void SetText(string text)
     {
-
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -26,7 +25,7 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
             module = await JS.InvokeAsync<IJSObjectReference>("import",
                 "./TextEditors/TextEditorComponent.razor.js");
 
-            var a = await module.InvokeAsync<string>("sayHello");
+            var a = await module.InvokeAsync<string>("GreetingHelpers.sayHello");
         }
     }
 
