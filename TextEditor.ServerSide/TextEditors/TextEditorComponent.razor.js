@@ -8,7 +8,15 @@
     // but instead that if you elect for a "single tab editor",
     // you can open various files in that "single tab editor" albeit only one at a time.
     //
-    // =========
+    /* ========= */
+    // text...
+    //
+    // It is believed that the long term implementation ought to be a combination
+    // of a rope and gapbuffer.
+    //
+    // First implementation: just modify a string directly
+    // Second implementation: modify a rope
+    // Third implementation modify a gapbuffer and "persist" non-contiguous edits to the rope
     text;
     lineEndPositionList;
 
@@ -65,6 +73,7 @@
     }
 
     clear() {
+        this.text = '';
         this.lineEndPositionList = [];
     }
 }
