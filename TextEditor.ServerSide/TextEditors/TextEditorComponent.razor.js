@@ -135,4 +135,11 @@
     // i.e. the text editor cursor should exist solely in JavaScript.
     // you do this by having Blazor render an empty div, then you just let JavaScript go wild and do whatever it wants to that div.
     // Since the div was rendered as empty, then Blazor diff won't touch it.
+    //
+    // # if you are storing the text in JavaScript, and the lineEndPositions in JavaScript, then
+    // how will you look at this data from C# when needed?
+    // |
+    // I have found this use case to be limited enough in frequency to where it should be either never used,
+    // or if it is used, that you could either duplicate the data for that extremely infrequent event
+    // and if it is more common than I expect, I am considering streaming from JavaScript to C# using a byte array?
 }
