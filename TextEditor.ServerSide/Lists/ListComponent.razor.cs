@@ -101,12 +101,14 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// TODO: determine a way to get the initial measurement of any arbitrary render fragment.
     /// ...The issue is with the timing of it all.
     /// And I just don't feel like looking into this at the moment.
+    /// 
+    /// I'm actually just not even gonna bother with this override right now.
     /// </summary>
     public void Initialize(
         IEnumerable<TItem>? items,
         RenderFragment<TItem>? childContent,
-        Func<TItem, Task>? deleteOnClickFunc,
-        int itemHeightOverride)
+        Func<TItem, Task>? deleteOnClickFunc/*,
+        int itemHeightOverride*/)
     {
         _items = items;
         _childContent = childContent;
