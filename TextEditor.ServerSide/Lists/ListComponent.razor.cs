@@ -89,7 +89,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             {
                 // An awkward scenario of InitializeAsync(...) needs to override the _itemHeight in OnAfterRenderAsync
                 // if 'InitializeAsync(...)' is invoked prior to the first render of this component.
-                await _myJsObjectInstance.InvokeAsync<int>("setItemHeight");
+                await SetItemHeightAsync(_itemHeight);
             }
             else
             {
@@ -154,7 +154,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (_myJsObjectInstance is not null)
         {
             _itemHeight = itemHeight;
-            await _myJsObjectInstance.InvokeAsync<int>("setItemHeight", _itemHeight);
+            await _myJsObjectInstance.InvokeVoidAsync("setItemHeight", _itemHeight);
         }
 
         if (!skipStateHasChangedInvocation)
