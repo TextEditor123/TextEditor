@@ -142,4 +142,10 @@
     // I have found this use case to be limited enough in frequency to where it should be either never used,
     // or if it is used, that you could either duplicate the data for that extremely infrequent event
     // and if it is more common than I expect, I am considering streaming from JavaScript to C# using a byte array?
+    //
+    // When it comes to rendering the text. I don't think I want to use Blazor?
+    // The text should be a rather expensive UI piece to deal with just by its nature.
+    // Also if I render the text in Blazor it creates this problematic scenario where the JavaScript needs state
+    // to move the cursor without interoping with .NET, meanwhile .NET needs state to show the text without "multiple interops with JavaScript / UI"
+    //
 }
