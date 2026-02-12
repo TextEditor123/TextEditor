@@ -38,9 +38,10 @@
     }
     else
     {
+        var localCache_StyleCss = $"height: {_itemHeight}px;";
         foreach (var item in _items)
         {
-            <div @key="item">
+            <div @key="item" style="@localCache_StyleCss">
                 @_childContent(item)
                 <button class="btn btn-danger">Delete</button>
             </div>

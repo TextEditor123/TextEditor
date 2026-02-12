@@ -21,6 +21,14 @@
 
     setItemHeight(itemHeight) {
         this.itemHeight = itemHeight;
+
+        let listChildrenContainerElement = document.getElementById(this.htmlId);
+        if (!listChildrenContainerElement) return;
+
+        if (listChildrenContainerElement.children.length == 0) return;
+
+        let cursorElement = listChildrenContainerElement.children[0];
+        cursorElement.style.height = this.itemHeight + "px";
     }
 
     registerHandles() {
@@ -41,7 +49,7 @@
         // This is a copy and pasted example from dev tools of just a text render fragment that was using C#:'Path.GetRandomFileName()' twice to generate text.
         measureLineHeightElement.innerHTML = "wwwe3w5r.vgc jmfgv034.wno<button class=\"btn btn-danger\">Delete</button>";
         listChildrenContainerElement.appendChild(measureLineHeightElement);
-        this.itemHeight = Math.ceil(measureLineHeightElement.getBoundingClientRect().height);
+        this.setItemHeight(Math.ceil(measureLineHeightElement.getBoundingClientRect().height));
         listChildrenContainerElement.removeChild(measureLineHeightElement);
         if (this.itemHeight < 1) {
             this.initializedSuccessfully = false;
