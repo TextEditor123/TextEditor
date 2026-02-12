@@ -15,6 +15,14 @@
         return this.initializedSuccessfully;
     }
 
+    getItemHeight() {
+        return this.itemHeight;
+    }
+
+    setItemHeight(itemHeight) {
+        this.itemHeight = itemHeight;
+    }
+
     registerHandles() {
         let listChildrenContainerElement = document.getElementById(this.htmlId);
         if (!listChildrenContainerElement) {

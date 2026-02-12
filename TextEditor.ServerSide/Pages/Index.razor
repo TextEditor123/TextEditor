@@ -36,7 +36,7 @@ Welcome to your new app.
                 throw new NotImplementedException("I'm not sure the best approach to this nullable reference type warning");
             }
 
-            _listComponent.Initialize(
+            _listComponent.InitializeAsync(
                 _personList,
                 _personRenderFragment,
                 person => { _personList.Remove(person); return Task.CompletedTask; });

@@ -68,6 +68,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     private string _htmlId;
 
     private bool _myJsObjectInstanceInitializedSuccessfully;
+    private int _itemHeight;
 
     protected override void OnInitialized()
     {
@@ -82,7 +83,9 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         {
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./Lists/ListComponent.razor.js");
             _myJsObjectInstance = await _module.InvokeConstructorAsync("ListComponent", _htmlId, _dotNetObjectReference);
+            // TODO: Combine these js interop invocations to get all state necessary in one trip.
             _myJsObjectInstanceInitializedSuccessfully = await _myJsObjectInstance.InvokeAsync<bool>("getInitializedSuccessfully");
+            _itemHeight = await _myJsObjectInstance.InvokeAsync<int>("getItemHeight");
             StateHasChanged();
         }
     }
@@ -101,19 +104,36 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// TODO: determine a way to get the initial measurement of any arbitrary render fragment.
     /// ...The issue is with the timing of it all.
     /// And I just don't feel like looking into this at the moment.
-    /// 
-    /// I'm actually just not even gonna bother with this override right now.
     /// </summary>
-    public void Initialize(
+    public async Task InitializeAsync(
         IEnumerable<TItem>? items,
         RenderFragment<TItem>? childContent,
-        Func<TItem, Task>? deleteOnClickFunc/*,
-        int itemHeightOverride*/)
+        Func<TItem, Task>? deleteOnClickFunc,
+        int itemHeightOverride = 0)
     {
         _items = items;
         _childContent = childContent;
         _deleteOnClickFunc = deleteOnClickFunc;
+        if (itemHeightOverride > 0 && _myJsObjectInstance is not null)
+        {
+            await SetItemHeightAsync(itemHeightOverride, skipStateHasChangedInvocation: true);
+        }
         StateHasChanged();
+    }
+
+    public async Task SetItemHeightAsync(int itemHeight, bool skipStateHasChangedInvocation = false)
+    {
+        if (itemHeight <= 0)
+            throw new ArgumentException("if (itemHeight <= 0)");
+
+        if (_myJsObjectInstance is not null)
+        {
+            _itemHeight = itemHeight;
+            await _myJsObjectInstance.InvokeAsync<int>("setItemHeight", _itemHeight);
+        }
+
+        if (!skipStateHasChangedInvocation)
+            StateHasChanged();
     }
 
     public void SetItems(IEnumerable<TItem>? items)
