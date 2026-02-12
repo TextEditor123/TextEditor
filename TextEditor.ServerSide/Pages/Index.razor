@@ -27,7 +27,7 @@ Welcome to your new app.
     private List<Person> _personList = new();
     private RenderFragment<Person>? _personRenderFragment;
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -36,13 +36,11 @@ Welcome to your new app.
                 throw new NotImplementedException("I'm not sure the best approach to this nullable reference type warning");
             }
 
-            _listComponent.InitializeAsync(
+            await _listComponent.InitializeAsync(
                 _personList,
                 _personRenderFragment,
                 person => { _personList.Remove(person); return Task.CompletedTask; });
         }
-
-        return Task.CompletedTask;
         // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.
     }
 
