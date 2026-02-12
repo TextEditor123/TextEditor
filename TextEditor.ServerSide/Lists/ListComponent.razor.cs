@@ -85,7 +85,17 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             _myJsObjectInstance = await _module.InvokeConstructorAsync("ListComponent", _htmlId, _dotNetObjectReference);
             // TODO: Combine these js interop invocations to get all state necessary in one trip.
             _myJsObjectInstanceInitializedSuccessfully = await _myJsObjectInstance.InvokeAsync<bool>("getInitializedSuccessfully");
-            _itemHeight = await _myJsObjectInstance.InvokeAsync<int>("getItemHeight");
+            if (_itemHeight > 0)
+            {
+                // An awkward scenario of InitializeAsync(...) needs to override the _itemHeight in OnAfterRenderAsync
+                // if 'InitializeAsync(...)' is invoked prior to the first render of this component.
+                await _myJsObjectInstance.InvokeAsync<int>("setItemHeight");
+            }
+            else
+            {
+                _itemHeight = await _myJsObjectInstance.InvokeAsync<int>("getItemHeight");
+            }
+
             StateHasChanged();
         }
     }
@@ -114,9 +124,24 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         _items = items;
         _childContent = childContent;
         _deleteOnClickFunc = deleteOnClickFunc;
-        if (itemHeightOverride > 0 && _myJsObjectInstance is not null)
+        if (itemHeightOverride > 0)
         {
-            await SetItemHeightAsync(itemHeightOverride, skipStateHasChangedInvocation: true);
+            if (_myJsObjectInstance is not null)
+            {
+                // There is "nothing" stopping someone from invoking InitializeAsync(...)
+                // after the first render.
+                //
+                // If they do, and they intend to use 'itemHeightOverride',
+                // then the else case of this conditional branch will NOT ever
+                // see OnAfterRenderAsync with firstRender==true, thus the provided
+                // itemHeightOverride would never be applied.
+                await SetItemHeightAsync(itemHeightOverride, skipStateHasChangedInvocation: true);
+            }
+            else
+            {
+                // The component hasn't rendered yet.
+                _itemHeight = itemHeightOverride;
+            }
         }
         StateHasChanged();
     }

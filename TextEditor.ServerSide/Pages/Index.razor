@@ -39,7 +39,8 @@ Welcome to your new app.
             await _listComponent.InitializeAsync(
                 _personList,
                 _personRenderFragment,
-                person => { _personList.Remove(person); return Task.CompletedTask; });
+                person => { _personList.Remove(person); return Task.CompletedTask; },
+                itemHeightOverride: 50);
         }
         // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.
     }
