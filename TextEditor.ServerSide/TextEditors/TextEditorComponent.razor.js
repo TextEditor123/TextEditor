@@ -176,4 +176,13 @@
     // I think I currently am just thinking a lot about how I'd render the text with JavaScript.
     // The cursor, I think this is manageable. But the text... I'd presume it IS possible
     // but it sounds a bit more involved.
+    //
+    // It is a smidge past my bed time, and my hands/arms are covered in lotion as part of a moisturizing routine but...
+    // "if Monaco exists, and it presumably is EXACTLY what you're describing, then what you're doing is completely pointless?"
+    // I think I agree, but so long as I am learning, I will continue down this path.
+    // I want to "make a genuine text editor" (and maybe a full blown IDE) because it is something to do in order to challenge myself and learn more.
+    // If I "vibe code" either by AI or "by hand write bad code that is equivalent in bad to vibe code" then I haven't done the goal.
+    // It has to be a genuine result. I need to actually understand.
+    // It is a similar thing with learning Spanish. I don't actually think I care about it, but it is a fairly distinct goal
+    // and I think the journey is something that has a lasting impact on your brain, that you carry with you whether you use it or not.
 }
