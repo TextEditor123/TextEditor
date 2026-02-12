@@ -164,4 +164,12 @@
     //
     // Otherwise I need to on scroll tell Blazor to re-render the TreeView THEN tell JavaScript interop to scroll
     // the active div into view. And it just becomes a big headache of optimization from all the js interop.
+    //
+    // The goal for Blazor I think is to re-use your existing C# / feel more comfortable and do so more quickly,
+    // ... add features.
+    //
+    // And these cases for where you want your C# code can just be the "low frequency events"
+    // such as hitting the Enter key on a TreeViewNode.
+    //
+    // And JavaScript told you what node was active.
 }
