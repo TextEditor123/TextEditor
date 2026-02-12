@@ -148,4 +148,13 @@
     // Also if I render the text in Blazor it creates this problematic scenario where the JavaScript needs state
     // to move the cursor without interoping with .NET, meanwhile .NET needs state to show the text without "multiple interops with JavaScript / UI"
     //
+    // In terms of a general solution that can be applied to a variety of UI when dealing with Blazor.
+    // I think the goal should be to have any high frequency events handled entirely in JavaScript.
+    //
+    // I don't believe the goal of Blazor is to remove 100% of JavaScript.
+    // That being said you also for that tiny amount that remains have to use raw JavaScript lest you
+    // include two UI frameworks in your app.
+    //
+    // You could "make the start menu a react app" but it probably is the case that most
+    // high frequency events can be moved to raw JavaScript/HTML and be done via Blazor rendering an empty div.
 }
