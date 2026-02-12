@@ -2,6 +2,7 @@
     htmlId;
     initializedSuccessfully;
     dotNetObjectReference;
+    itemHeight; // no decimal places, >= 1
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -29,9 +30,15 @@
         cursorElement = listChildrenContainerElement.children[0];
 
         let measureLineHeightElement = document.createElement('div');
-        // This is a copy and pasted example from dev tools of just a text render fragment
-        measureLineHeightElement.innerHTML = "<!--!-->wwwe3w5r.vgc jmfgv034.wno<!--!--><!--!--><!--!--><button class=\"btn btn-danger\">Delete</button>";
-
+        // This is a copy and pasted example from dev tools of just a text render fragment that was using C#:'Path.GetRandomFileName()' twice to generate text.
+        measureLineHeightElement.innerHTML = "wwwe3w5r.vgc jmfgv034.wno<button class=\"btn btn-danger\">Delete</button>";
+        listChildrenContainerElement.appendChild(measureLineHeightElement);
+        this.itemHeight = Math.ceil(measureLineHeightElement.getBoundingClientRect().height);
+        listChildrenContainerElement.removeChild(measureLineHeightElement);
+        if (this.itemHeight < 1) {
+            this.initializedSuccessfully = false;
+            return;
+        }
 
         this.initializedSuccessfully = true;
 
