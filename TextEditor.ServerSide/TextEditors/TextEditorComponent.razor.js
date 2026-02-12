@@ -157,4 +157,11 @@
     //
     // You could "make the start menu a react app" but it probably is the case that most
     // high frequency events can be moved to raw JavaScript/HTML and be done via Blazor rendering an empty div.
+    //
+    // For example my TreeView I had an issue with scrolling the active node into view.
+    // I think I can quite easily move the active node in JavaScript alone by repositioning a Blazor rendered empty div.
+    // Then I scroll THAT div into view.
+    //
+    // Otherwise I need to on scroll tell Blazor to re-render the TreeView THEN tell JavaScript interop to scroll
+    // the active div into view. And it just becomes a big headache of optimization from all the js interop.
 }
