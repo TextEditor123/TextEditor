@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using TextEditor.ServerSide.Lists
 @using TextEditor.ServerSide.TextEditors
 
 <PageTitle>Index</PageTitle>
@@ -9,5 +10,56 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<TextEditorComponent/>
+<button class="btn btn-primary" @onclick="AddRandomPersonToListOnClick">Add random Person to List</button>
+
+<ListComponent @ref="_listComponent" TItem="Person" />
+
+@{
+    // I believe this is the correct syntax, but I'm uncertain
+    _personRenderFragment = person =>
+    @<text>
+        @person.FirstName @person.LastName
+    </text>;
+}
+
+@code {
+    private ListComponent<Person>? _listComponent;
+    private List<Person> _personList = new();
+    private RenderFragment<Person>? _personRenderFragment;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (_listComponent is null)
+            {
+                throw new NotImplementedException("I'm not sure the best approach to this nullable reference type warning");
+            }
+
+            _listComponent.Initialize(
+                _personList,
+                _personRenderFragment,
+                person => { _personList.Remove(person); return Task.CompletedTask; });
+        }
+
+        return Task.CompletedTask;
+        // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.
+    }
+
+    private void AddRandomPersonToListOnClick()
+    {
+        _personList.Add(new Person(Path.GetRandomFileName(), Path.GetRandomFileName()));
+
+        // I'm not sure the best approach to this nullable reference type warning
+        // This method is extremely low frequency, so checking the null to remove the warning is negligible.
+        //
+        if (_listComponent is null)
+            return;
+
+        _listComponent.Public_StateHasChanged();
+    }
+}
+
+
+@* <TextEditorComponent/> *@
 

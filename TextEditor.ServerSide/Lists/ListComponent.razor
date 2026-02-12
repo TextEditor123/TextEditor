@@ -1,0 +1,35 @@
+﻿@typeparam TItem
+
+<h3>ListComponent</h3>
+<div id="@_htmlId">
+    @if (_items is null)
+    {
+        <text>Items is null</text>
+    }
+    else if (_childContent is null)
+    {
+        <text>ChildContent is null</text>
+    }
+    else if (_deleteOnClickFunc is null)
+    {
+        <text>DeleteOnClickFunc is null</text>
+    }
+    else if (!_myJsObjectInstanceInitializedSuccessfully)
+    {
+        <text>!_myJsObjectInstanceInitializedSuccessfully</text>
+    }
+    else
+    {
+        foreach (var item in _items)
+        {
+            <div @key="item">
+                @_childContent(item)
+
+                @* mmm lambda event handler is not good I'll finish typing the current example then rewrite it without the lambda *@
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        }
+    }
+</div>
+
+
