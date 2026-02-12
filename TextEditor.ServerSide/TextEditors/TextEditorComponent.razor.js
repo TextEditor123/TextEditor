@@ -172,4 +172,8 @@
     // such as hitting the Enter key on a TreeViewNode.
     //
     // And JavaScript told you what node was active.
+    //
+    // I think I currently am just thinking a lot about how I'd render the text with JavaScript.
+    // The cursor, I think this is manageable. But the text... I'd presume it IS possible
+    // but it sounds a bit more involved.
 }
