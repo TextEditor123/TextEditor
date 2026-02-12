@@ -2,6 +2,15 @@
 
 <h3>ListComponent</h3>
 <div id="@_htmlId">
+    @*
+    this empty div is the "cursor"
+    In the JavaScript this line exists:
+        'cursorElement = listChildrenContainerElement.children[0];'
+    The cursor element displays the active background-color,
+    and is how the keyboard events are scrolled into view.
+    *@
+    <div></div>
+
     @if (_items is null)
     {
         <text>Items is null</text>
@@ -24,8 +33,6 @@
         {
             <div @key="item">
                 @_childContent(item)
-
-                @* mmm lambda event handler is not good I'll finish typing the current example then rewrite it without the lambda *@
                 <button class="btn btn-danger">Delete</button>
             </div>
         }
