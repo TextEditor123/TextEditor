@@ -1,5 +1,12 @@
 ﻿@typeparam TItem
 
+@*
+    See site.css for css
+
+    CSS isolation triggers me cause it has to tag everything with an "id"-ish attribute "b-canv022aum".
+    In this list component I don't want to incur that cost.
+*@
+
 <h3>ListComponent</h3>
 <div id="@_htmlId">
     @*
@@ -8,6 +15,8 @@
         'cursorElement = listChildrenContainerElement.children[0];'
     The cursor element displays the active background-color,
     and is how the keyboard events are scrolled into view.
+    Blazor diffs ignore this element since it lacks any attributes/"childContent"
+    Thus, JavaScript can do whatever it wants with this div.
     *@
     <div></div>
 

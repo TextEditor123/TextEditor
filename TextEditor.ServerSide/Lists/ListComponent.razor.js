@@ -20,11 +20,21 @@
             this.initializedSuccessfully = false;
             return;
         }
+
         let cursorElement = null;
-        if (listChildrenContainerElement.children.length > 0) {
-            cursorElement = listChildrenContainerElement.children[0];
+        if (listChildrenContainerElement.children.length == 0) {
+            this.initializedSuccessfully = false;
+            return;
         }
+        cursorElement = listChildrenContainerElement.children[0];
+
+        let measureLineHeightElement = document.createElement('div');
+        // This is a copy and pasted example from dev tools of just a text render fragment
+        measureLineHeightElement.innerHTML = "<!--!-->wwwe3w5r.vgc jmfgv034.wno<!--!--><!--!--><!--!--><button class=\"btn btn-danger\">Delete</button>";
+
+
         this.initializedSuccessfully = true;
+
         listChildrenContainerElement.addEventListener('click', event => {
             let parentBoundingClientRect = listChildrenContainerElement.getBoundingClientRect();
             let relativeY = event.clientY - parentBoundingClientRect.top;
@@ -50,5 +60,7 @@
             }
             this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
         });
+
+        cursorElement.className = 'list-component-cursor';
     }
 }

@@ -87,7 +87,27 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         }
     }
 
-    public void Initialize(IEnumerable<TItem>? items, RenderFragment<TItem>? childContent, Func<TItem, Task>? deleteOnClickFunc)
+    /// <summary>
+    /// The itemHeight is measured on the first render by putting a text node as the render fragment's resulting content.
+    /// i.e.: Each node looks like this:
+    /// ```
+    /// Aaa Bbb [Delete]
+    /// Ccc Ddd [Delete]
+    /// Eee Fff [Delete]
+    /// ```
+    /// If you measure the height yourself, you can specify that value.
+    /// This is necessary if you have a render fragment that has a height different to that of when a text node is used in place of it.
+    /// 
+    /// TODO: determine a way to get the initial measurement of any arbitrary render fragment.
+    /// ...The issue is with the timing of it all.
+    /// And I just don't feel like looking into this at the moment.
+    /// </summary>
+    /// <param name="itemHeightOverride"></param>
+    public void Initialize(
+        IEnumerable<TItem>? items,
+        RenderFragment<TItem>? childContent,
+        Func<TItem, Task>? deleteOnClickFunc,
+        int itemHeightOverride)
     {
         _items = items;
         _childContent = childContent;
