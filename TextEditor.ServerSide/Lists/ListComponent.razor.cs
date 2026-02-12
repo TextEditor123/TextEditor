@@ -127,7 +127,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         var foundElement = default(TItem);
         foreach (var element in _items)
         {
-            if (index == 0)
+            if (index == indexClicked)
             {
                 success = true;
                 foundElement = element;
