@@ -46,7 +46,7 @@ Welcome to your new app.
         // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.
     }
 
-    private void AddRandomPersonToListOnClick()
+    private Task AddRandomPersonToListOnClick()
     {
         _personList.Add(new Person(Path.GetRandomFileName(), Path.GetRandomFileName()));
 
@@ -54,9 +54,9 @@ Welcome to your new app.
         // This method is extremely low frequency, so checking the null to remove the warning is negligible.
         //
         if (_listComponent is null)
-            return;
+            return Task.CompletedTask;
 
-        _listComponent.Public_StateHasChanged();
+        return _listComponent.Public_StateHasChangedAsync(totalCount: _personList.Count);
     }
 }
 

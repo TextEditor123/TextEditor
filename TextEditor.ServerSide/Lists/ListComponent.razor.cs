@@ -92,7 +92,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     {
         if (TotalCount != _totalCount)
         {
-            return SetTotalCount(TotalCount);
+            return SetTotalCountAsync(TotalCount);
         }
         else
         {
@@ -158,7 +158,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         Func<TItem, Task>? deleteOnClickFunc,
         int itemHeightOverride = 0)
     {
-        await SetItemsProviderDelegate(itemsProviderDelegate, totalCount);
+        await SetItemsProviderDelegateAsync(itemsProviderDelegate, totalCount);
         _childContent = childContent;
         _deleteOnClickFunc = deleteOnClickFunc;
         if (itemHeightOverride > 0)
@@ -198,14 +198,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    public async Task SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount, bool skipStateHasChangedInvocation = false)
+    public async Task SetItemsProviderDelegateAsync(ItemsProviderDelegate? itemsProviderDelegate, int totalCount, bool skipStateHasChangedInvocation = false)
     {
         _itemsProviderDelegate = itemsProviderDelegate;
         if (_totalCount != totalCount)
         {
-            await SetTotalCount(totalCount, skipStateHasChangedInvocation: true);
+            await SetTotalCountAsync(totalCount, skipStateHasChangedInvocation: true);
         }
-        _totalCount = totalCount;
 
         if (!skipStateHasChangedInvocation)
             StateHasChanged();
@@ -214,7 +213,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// <summary>
     /// The TotalCount property likely negates any need to invoke this method externally from the component itself.
     /// </summary>
-    public async Task SetTotalCount(int totalCount, bool skipStateHasChangedInvocation = false)
+    public async Task SetTotalCountAsync(int totalCount, bool skipStateHasChangedInvocation = false)
     {
         if (_myJsObjectInstance is not null)
         {
@@ -232,9 +231,17 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// All public methods from the ListComponent type specifically will internally invoke 'StateHasChanged()'.
     /// Thus you do not have to explicitly invoke this method after any other public method.
     /// </summary>
-    public void Public_StateHasChanged()
+    public Task Public_StateHasChangedAsync(int totalCount)
     {
-        StateHasChanged();
+        if (_totalCount != totalCount)
+        {
+            return SetTotalCountAsync(totalCount);
+        }
+        else
+        {
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
     }
 
     /// <summary>
@@ -276,19 +283,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     {
         _listVirtualizationRequest = listVirtualizationRequest;
         StateHasChanged();
-    }
-
-    /// <summary>This method is purposefully not public (contrary to the pattern one might've expected based on the other methods).</summary>
-    private ValueTask SetItemCount(int itemCount)
-    {
-        if (_myJsObjectInstance is not null)
-        {
-            return _myJsObjectInstance.InvokeVoidAsync("setItemCount", 0);
-        }
-        else
-        {
-            return ValueTask.CompletedTask;
-        }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
