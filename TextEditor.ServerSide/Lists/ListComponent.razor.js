@@ -132,7 +132,7 @@
             let parentBoundingClientRect = listElement.getBoundingClientRect();
             let relativeY = event.clientY - parentBoundingClientRect.top;
             let indexClicked = -1;
-            let deleteButtonWasClicked = false;
+            let dataButtonValue = "";
             for (let i = 0; i < childrenContainerImmediateElement.children.length; i++) {
                 let childElement = childrenContainerImmediateElement.children[i];
                 let childBoundingClientRect = childElement.getBoundingClientRect();
@@ -142,18 +142,27 @@
                     // ... I'm not sure whether a text node would be in the '.children' property.
                     indexClicked = i;
                     if (childElement.children.length > 0) {
-                        let buttonElement = childElement.children[childElement.children.length - 1];
-                        let buttonBoundingClientRect = buttonElement.getBoundingClientRect();
-                        if (event.clientX >= buttonBoundingClientRect.left && event.clientX < buttonBoundingClientRect.left + buttonBoundingClientRect.width &&
-                            event.clientY >= buttonBoundingClientRect.top && event.clientY < buttonBoundingClientRect.top + buttonBoundingClientRect.height) {
+                        // TODO: uhh you don't have to do this cause it would be the target of the event?
+                        for (let k = childElement.children.length - 1; k >= 0; k--) {
+                            let buttonElement = childElement.children[k];
+                            if (buttonElement.tagName.toLowerCase() !== 'button')
+                                break;
+                            let buttonBoundingClientRect = buttonElement.getBoundingClientRect();
+                            if (event.clientX >= buttonBoundingClientRect.left && event.clientX < buttonBoundingClientRect.left + buttonBoundingClientRect.width &&
+                                event.clientY >= buttonBoundingClientRect.top && event.clientY < buttonBoundingClientRect.top + buttonBoundingClientRect.height) {
 
-                            deleteButtonWasClicked = true;
+                                dataButtonValue = buttonElement.getAttribute("data-button");
+                                if (!dataButtonValue) {
+                                    dataButtonValue = "";
+                                }
+                                break;
+                            }
                         }
                     }
                     break;
                 }
             }
-            if (deleteButtonWasClicked) {
+            if (dataButtonValue === "delete") {
                 let index = this.cursorIndex; // I'm worried the index will change out from under me when the deletion occurs.
                 let beforeCursorDeletionOccurred = index > 0 && indexClicked < index;
                 let sameCursorDeletionOccurred = index === indexClicked;
