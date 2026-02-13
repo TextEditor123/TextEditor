@@ -183,11 +183,11 @@
                         this.scrollCursorIntoView();
                     }
                     else {
-                        let index = this.subFocusIndex == -1 ? 0 : this.subFocusIndex + 1;
+                        let index = this.subFocusIndex + 1;
                         for (; index < node.children.length; i++) {
                             let child = node.children.length[index];
                             if (child.style.tabindex != 0) {
-                                this.subFocusIndex = index;//dah*
+                                this.subFocusIndex = index;
                                 child.focus();
                             }
                         }
