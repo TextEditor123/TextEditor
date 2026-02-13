@@ -18,12 +18,11 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
 
+    /// <summary>
+    /// onchange, this property will set the _totalCount in C# and JavaScript
+    /// </summary>
     [Parameter, EditorRequired]
-    public int TotalCount
-    {
-        get => _totalCount;
-        set => _totalCount = value;
-    }
+    public int TotalCount { get; set; }
 
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
@@ -78,6 +77,14 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     private bool _myJsObjectInstanceInitializedSuccessfully;
     private int _itemHeight;
     private int _totalCount;
+
+    protected override void OnParametersSet()
+    {
+        if (TotalCount != _totalCount)
+        {
+            SetTotalCount(_totalCount);
+        }
+    }
 
     protected override void OnInitialized()
     {
