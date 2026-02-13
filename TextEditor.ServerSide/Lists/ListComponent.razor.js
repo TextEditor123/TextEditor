@@ -86,6 +86,10 @@
             listElement.scrollTop += (cursorTop - listElement.scrollTop);
             // oh no I have 7 minutes until bedtime
         }
+
+        if (document.activeElement !== listElement) {
+            listElement.focus();
+        }
     }
 
     setItemHeight(itemHeight) {
@@ -175,17 +179,19 @@
                     if (this.cursorIndex >= childrenContainerImmediateElement.children.length) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
+                        cursorElement.focus();
                         return;
                     }
                     let node = childrenContainerImmediateElement.children[this.cursorIndex];
                     if (this.subFocusIndex >= node.children.length - 1) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
+                        cursorElement.focus();
                     }
                     else {
                         let index = this.subFocusIndex + 1;
-                        for (; index < node.children.length; i++) {
-                            let child = node.children.length[index];
+                        for (; index < node.children.length; index++) {
+                            let child = node.children[index];
                             if (child.style.tabindex != 0) {
                                 this.subFocusIndex = index;
                                 child.focus();
