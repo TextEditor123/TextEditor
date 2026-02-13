@@ -211,7 +211,8 @@
                         dataButtonValue = "";
                     }
                     if (dataButtonValue == "delete") {
-                        this.dotNetObjectReference.invokeMethodAsync("OnDelete", indexClicked);
+                        this.dotNetObjectReference.invokeMethodAsync("OnDelete", this.cursorIndex - this.mostRecentSkip);
+                        listElement.focus();
                     }
                     else {
                         this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, dataButtonValue);
