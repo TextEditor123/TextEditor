@@ -126,6 +126,10 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
                 _itemHeight = await _myJsObjectInstance.InvokeAsync<int>("getItemHeight");
             }
 
+            // The initial ListVirtualizationResult needs to be asked for from C#
+            // 
+            // All others are provided from JavaScript by way of a relevant event firing.
+            //
             _listVirtualizationRequest = await _myJsObjectInstance.InvokeAsync<ListVirtualizationRequest>("getListVirtualizationRequest");
 
             StateHasChanged();
