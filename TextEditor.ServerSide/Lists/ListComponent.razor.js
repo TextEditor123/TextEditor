@@ -3,7 +3,7 @@
     initializedSuccessfully;
     dotNetObjectReference;
     itemHeight = 1; // no decimal places, >= 1
-    cursorIndex;
+    cursorIndex = 0;
     totalCount;
     countWellknownImmediateElements = 3;
     indexCursorImmediateElement = 0;
