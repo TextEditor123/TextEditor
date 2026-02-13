@@ -63,7 +63,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// </summary>
     private RenderFragment<TItem>? _childContent;
 
-    private Func<ListComponentEventKind, TItem, Task>? _onEventFunc;
+    private Func<ListComponentEventKind, TItem, string, Task>? _onEventFunc;
 
     /// <summary>
     /// If you pull the IEnumerable from a source that can change between the time that the UI is rendered,
@@ -124,7 +124,9 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// |
     /// If you set the totalCount, this can implicitly cause the re-render unless you specify 'skipStateHasChangedInvocation: false'
     /// There also is Public_StateHasChanged(...). A lot of other public methods will work too.
-    /// 
+    /// |
+    /// The onEventFunc 'string' argument is the data-button attribute's value for whichever HTML element was the target of the event.
+    /// This helps differentiate between whether the 'Enter' was a button on a node, or the "node itself".
     /// 
     /// The itemHeight is measured on the first render by putting a text node as the render fragment's resulting content.
     /// i.e.: Each node looks like this:<br/>
@@ -144,7 +146,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         ItemsProviderDelegate? itemsProviderDelegate,
         int totalCount,
         RenderFragment<TItem>? childContent,
-        Func<ListComponentEventKind, TItem, Task>? onEventFunc,
+        Func<ListComponentEventKind, TItem, string, Task>? onEventFunc,
         int itemHeightOverride = 0)
     {
         await SetItemsProviderDelegateAsync(itemsProviderDelegate, totalCount);
@@ -245,7 +247,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (indexClicked >= _virtualizedResult.Count)
             return Task.CompletedTask;
 
-        return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked]);
+        return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked], string.Empty);
     }
     
     [JSInvokable]
@@ -257,11 +259,11 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (indexClicked >= _virtualizedResult.Count)
             return Task.CompletedTask;
 
-        return _onEventFunc.Invoke(ListComponentEventKind.Delete, _virtualizedResult[indexClicked]);
+        return _onEventFunc.Invoke(ListComponentEventKind.Delete, _virtualizedResult[indexClicked], string.Empty);
     }
     
     [JSInvokable]
-    public Task OnEnter(int cursorIndex)
+    public Task OnEnter(int cursorIndex, string dataButton)
     {
         if (_itemsProviderDelegate is null || _onEventFunc is null || cursorIndex < 0 || _virtualizedResult.Count == 0)
             return Task.CompletedTask;
@@ -269,7 +271,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (cursorIndex >= _virtualizedResult.Count)
             return Task.CompletedTask;
 
-        return _onEventFunc.Invoke(ListComponentEventKind.Enter, _virtualizedResult[cursorIndex]);
+        return _onEventFunc.Invoke(ListComponentEventKind.Enter, _virtualizedResult[cursorIndex], dataButton);
     }
 
     [JSInvokable]

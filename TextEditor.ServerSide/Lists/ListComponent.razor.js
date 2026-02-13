@@ -202,11 +202,15 @@
                     }
                     break;
                 case 'Enter':
+                    event.preventDefault();
                     if (event.target === listElement) {
-                        event.preventDefault();
                         this.scrollCursorIntoView();
-                        this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex);
                     }
+                    let aaa = event.target.getAttribute("data-button");
+                    if (!aaa) {
+                        aaa = "";
+                    }
+                    this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, aaa);
                     break;
             }
         });
