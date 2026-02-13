@@ -196,13 +196,32 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    public void SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount)
+    public async Task SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount)
     {
         _itemsProviderDelegate = itemsProviderDelegate;
+        if (_totalCount != totalCount)
+        {
+            await SetTotalCount(totalCount, skipStateHasChangedInvocation: true);
+        }
         _totalCount = totalCount;
         StateHasChanged();
     }
-    
+
+    /// <summary>
+    /// This method serves as an alternative to the TotalCount property.
+    /// </summary>
+    public async Task SetTotalCount(int totalCount, bool skipStateHasChangedInvocation = false)
+    {
+        if (_myJsObjectInstance is not null)
+        {
+            _totalCount = totalCount;
+            await _myJsObjectInstance.InvokeVoidAsync("setTotalCount", _totalCount);
+        }
+
+        if (!skipStateHasChangedInvocation)
+            StateHasChanged();
+    }
+
     /// <summary>
     /// The naming convention being broken here is quite awkward but I think I'd prefer to just call it what it is.
     /// 
