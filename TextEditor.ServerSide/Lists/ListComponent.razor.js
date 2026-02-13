@@ -128,6 +128,7 @@
         });
 
         listElement.addEventListener('scroll', () => {
+            // I need the trailing edge
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
