@@ -61,7 +61,7 @@
                 _virtualizedResult.Add(item);
                 <div @key="item" style="@localCache_StyleCss">
                     @_childContent!(item)
-                    <button class="btn btn-danger">Delete</button>
+                    <button class="btn btn-danger" data-button="delete">Delete</button>
                 </div>
             }
         }
