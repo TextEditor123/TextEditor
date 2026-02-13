@@ -52,6 +52,7 @@
         if (this.cursorIndex == cursorIndex) return;
 
         this.cursorIndex = cursorIndex;
+        this.subFocusIndex = -1;
         this.scrollCursorIntoView();
     }
 
@@ -170,12 +171,25 @@
                     break;
                 case 'ArrowRight':
                     event.preventDefault();
-                    if (this.cursorIndex > 0) {
-                        this.setCursorIndex(this.cursorIndex - 1);
+                    // TODO: if the subFocusIndex is -1, give an outline to the node.
+                    if (this.subFocusIndex >= childrenContainerImmediateElement.children.length - 1) {
+                        this.subFocusIndex = -1;
+                        this.scrollCursorIntoView();
+                    }
+                    else {
+                        let index = this.subFocusIndex == -1 ? 0 : this.subFocusIndex + 1;
+                        for (; index < childrenContainerImmediateElement.children.length; i++) {
+                            let child = childrenContainerImmediateElement.children.length[index];
+                            if (child.style.tabindex != 0) {
+                                this.subFocusIndex = index;
+                                child.focus();
+                            }
+                        }
                     }
                     break;
                 case 'Enter':
                     event.preventDefault();
+                    this.scrollCursorIntoView();
                     this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex);
                     break;
             }
