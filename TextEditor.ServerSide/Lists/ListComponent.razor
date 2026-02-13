@@ -9,25 +9,25 @@
 
 @{
     _virtualizedResult.Clear();
+    var shouldRenderEnumerable = false;
 }
 
-<h3>ListComponent</h3>
-<div id="@_htmlId" class="list-component" tabindex="0">
+<div class="list-component" id="@_htmlId" tabindex="0">
     @*
-    this empty div is the "cursor"
-    In the JavaScript this line exists:
-        'cursorElement = listChildrenContainerElement.children[0];'
-    The cursor element displays the active background-color,
-    and is how the keyboard events are scrolled into view.
-    Blazor diffs ignore this element since it lacks any attributes/"childContent"
-    Thus, JavaScript can do whatever it wants with this div.
-    *@
+        this empty div is the "cursor"
+        In the JavaScript this line exists:
+            'cursorElement = listChildrenContainerElement.children[0];'
+        The cursor element displays the active background-color,
+        and is how the keyboard events are scrolled into view.
+        Blazor diffs ignore this element since it lacks any attributes/"childContent"
+        Thus, JavaScript can do whatever it wants with this div.
+        *@
     <div></div>
 
     @* I totally forgot to skip the cursor didn't I *@
 
     @* I might as well all in and "forget" to skip this virtualization boundary too while I'm at it. *@
-    <div class="list-component-virtualization" style="height: @(_totalCount * _itemHeight)px;"></div>
+    <div class="list-component-virtualization" style="height: @(_totalCount* _itemHeight)px;"></div>
 
     @if (_itemsProviderDelegate is null)
     {
@@ -47,17 +47,25 @@
     }
     else
     {
-        var localCache_StyleCss = $"height: {_itemHeight}px; position: relative;";
-        var enumerable = _itemsProviderDelegate.Invoke(skip: _listVirtualizationRequest.Skip, take: _listVirtualizationRequest.Take);
-        foreach (var item in enumerable)
-        {
-            _virtualizedResult.Add(item);
-            <div @key="item" style="@localCache_StyleCss">
-                @_childContent(item)
-                <button class="btn btn-danger">Delete</button>
-            </div>
-        }
+        shouldRenderEnumerable = true;
     }
+
+    <div>
+        @* Null forgiving operator relative to 'shouldRenderEnumerable' bool *@
+        @if (shouldRenderEnumerable)
+        {
+            var localCache_StyleCss = $"height: {_itemHeight}px; position: relative;";
+            var enumerable = _itemsProviderDelegate!.Invoke(skip: _listVirtualizationRequest.Skip, take: _listVirtualizationRequest.Take);
+            foreach (var item in enumerable)
+            {
+                _virtualizedResult.Add(item);
+                <div @key="item" style="@localCache_StyleCss">
+                    @_childContent!(item)
+                    <button class="btn btn-danger">Delete</button>
+                </div>
+            }
+        }
+    </div>
 </div>
 
 
