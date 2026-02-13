@@ -92,7 +92,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     {
         if (TotalCount != _totalCount)
         {
-            return SetTotalCount(_totalCount);
+            return SetTotalCount(TotalCount);
         }
         else
         {
