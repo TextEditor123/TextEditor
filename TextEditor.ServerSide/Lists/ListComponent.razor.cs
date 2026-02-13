@@ -18,6 +18,20 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
 
+    /*
+     * I like actually deleted all my source code a few days back btw
+     * Hmm
+     * 
+     * I want to make a TreeView
+     * Is TreeView == ListComponent?
+     * 
+     * RenderFragment div width of depth to offset text
+     * Then dirs don't get buttons cause they need arrowright to expand
+     * then ummm
+     * 
+     * idk I'm hungry forget this
+     */
+
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
     /// <summary>
