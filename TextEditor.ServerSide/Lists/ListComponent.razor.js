@@ -285,6 +285,8 @@
                         }
                         if (dataButtonValue == "delete") {
                             // if you await UI still receives keyboard events? I feel like I've never seen someone await this but it screams out for you to await it with that Async suffix.
+                            //
+                            // I think you should await it, but I made the lambdas async and added await and everything stopped working no errors.
                             this.dotNetObjectReference.invokeMethodAsync("OnDelete", this.cursorIndex - this.mostRecentSkip);
                             listElement.focus();
                             this.subFocusIndex = -1;
