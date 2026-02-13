@@ -194,14 +194,12 @@
                     if (this.cursorIndex - this.mostRecentSkip >= childrenContainerImmediateElement.children.length) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
-                        cursorElement.focus();
                         return;
                     }
                     let node = childrenContainerImmediateElement.children[this.cursorIndex - this.mostRecentSkip];
                     if (this.subFocusIndex >= node.children.length - 1) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
-                        cursorElement.focus();
                     }
                     else {
                         let index = this.subFocusIndex + 1;
