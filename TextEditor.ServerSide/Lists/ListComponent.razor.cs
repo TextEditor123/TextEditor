@@ -271,6 +271,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         }
     }
 
+    [JSInvokable]
+    public void OnScroll(ListVirtualizationRequest listVirtualizationRequest)
+    {
+        _listVirtualizationRequest = listVirtualizationRequest;
+        StateHasChanged();
+    }
+
     /// <summary>This method is purposefully not public (contrary to the pattern one might've expected based on the other methods).</summary>
     private ValueTask SetItemCount(int itemCount)
     {

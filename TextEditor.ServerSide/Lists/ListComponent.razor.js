@@ -121,10 +121,14 @@
                 case 'ArrowDown':
                     event.preventDefault();
                     if (this.cursorIndex < this.totalCount - 1) {
-                        setCursorIndex(this.cursorIndex + 1);
+                        this.setCursorIndex(this.cursorIndex + 1);
                     }
                     break;
             }
+        });
+
+        listElement.addEventListener('scroll', () => {
+            this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
         this.initializedSuccessfully = true;
