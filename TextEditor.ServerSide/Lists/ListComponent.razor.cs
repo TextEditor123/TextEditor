@@ -64,6 +64,16 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     private RenderFragment<TItem>? _childContent;
 
     private Func<ListComponentEventKind, TItem, string, Task>? _onEventFunc;
+    /// <summary>
+    /// DataButton is used with the Enter key (any possibly other events)
+    /// to represent the event target.
+    /// 
+    /// The "wellknown DataButton" are:
+    /// - string.Empty => this means the list component itself was the event target
+    /// - delete       => this means the delete button was clicked, and thus the event...
+    ///                   ...triggered extra JavaScript logic to fix the cursor position.
+    /// </summary>
+    private Func<TItem, IEnumerable<(string CssClass, string DataButton, string Text)>>? _buttonsProviderFunc;
 
     /// <summary>
     /// If you pull the IEnumerable from a source that can change between the time that the UI is rendered,
@@ -145,11 +155,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     public async Task InitializeAsync(
         ItemsProviderDelegate? itemsProviderDelegate,
         int totalCount,
+        Func<TItem, IEnumerable<(string CssClass, string DataButton, string Text)>>? buttonsProviderFunc,
         RenderFragment<TItem>? childContent,
         Func<ListComponentEventKind, TItem, string, Task>? onEventFunc,
         int itemHeightOverride = 0)
     {
         await SetItemsProviderDelegateAsync(itemsProviderDelegate, totalCount);
+        _buttonsProviderFunc = buttonsProviderFunc;
         _childContent = childContent;
         _onEventFunc = onEventFunc;
         if (itemHeightOverride > 0)

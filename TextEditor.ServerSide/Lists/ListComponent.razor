@@ -59,8 +59,14 @@
                 <div @key="item" style="@localCache_StyleCss">
                     @_childContent!(item)
 
-                    @* In the JavaScript: if (dataButtonValue == "delete")... *@
-                    <button class="btn btn-danger" data-button="delete">Delete</button>
+                    @if (_buttonsProviderFunc is not null)
+                    {
+                        @* In the JavaScript: if (dataButtonValue == "delete")... *@
+                        @foreach (var buttonOptionsTuple in _buttonsProviderFunc.Invoke(item))
+                        {
+                            <button class="@buttonOptionsTuple.CssClass" data-button="@buttonOptionsTuple.DataButton">@buttonOptionsTuple.Text</button>
+                        }
+                    }
                 </div>
             }
         }
