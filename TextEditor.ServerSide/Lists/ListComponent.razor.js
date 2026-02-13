@@ -5,6 +5,10 @@
     itemHeight = 1; // no decimal places, >= 1
     cursorIndex;
     totalCount;
+    countWellknownImmediateElements = 3;
+    indexCursorImmediateElement = 0;
+    indexVirtualizationImmediateElement = 1;
+    indexChildrenContainerImmediateElement = 2;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -42,12 +46,13 @@
 
         this.cursorIndex = cursorIndex;
 
-        let listChildrenContainerElement = document.getElementById(this.htmlId);
-        if (!listChildrenContainerElement) return;
+        let listElement = document.getElementById(this.htmlId);
+        if (!listElement || listElement.children.length != this.countWellknownImmediateElements) return;
 
-        if (listChildrenContainerElement.children.length == 0) return;
+        let childrenContainerElement = listElement.children[this.indexChildrenContainerImmediateElement];
+        if (!childrenContainerElement) return;
 
-        let cursorElement = listChildrenContainerElement.children[0];
+        let cursorElement = listElement.children[this.indexCursorImmediateElement];
         cursorElement.style.height = this.itemHeight + "px";
         cursorElement.style.top = this.cursorIndex * this.itemHeight + "px";
     }
