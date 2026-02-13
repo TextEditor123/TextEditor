@@ -244,10 +244,10 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public void OnClick(int indexClicked)
     {
-        if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0)
+        if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
             return;
 
-        var index = skip;
+        var index = _listVirtualizationRequest.Skip;
         var success = false;
         var foundElement = default(TItem);
         foreach (var element in _virtualizedResult)

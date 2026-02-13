@@ -12,7 +12,7 @@ Welcome to your new app.
 
 <button class="btn btn-primary" @onclick="AddRandomPersonToListOnClick">Add random Person to List</button>
 
-<ListComponent @ref="_listComponent" TItem="Person" />
+<ListComponent @ref="_listComponent" TItem="Person" TotalCount="_personList.Count" />
 
 @{
     // I believe this is the correct syntax, but I'm uncertain
@@ -37,7 +37,8 @@ Welcome to your new app.
             }
 
             await _listComponent.InitializeAsync(
-                _personList,
+                (skip, take) => _personList.Skip(skip).Take(take),
+                _personList.Count,
                 _personRenderFragment,
                 person => { _personList.Remove(person); return Task.CompletedTask; }/*,
                 itemHeightOverride: 500*/);
