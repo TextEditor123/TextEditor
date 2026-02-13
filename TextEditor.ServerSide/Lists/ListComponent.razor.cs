@@ -18,6 +18,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
 
+    [Parameter, EditorRequired]
+    public int TotalCount
+    {
+        get => _totalCount;
+        set => _totalCount = value;
+    }
+
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
     /// <summary>
