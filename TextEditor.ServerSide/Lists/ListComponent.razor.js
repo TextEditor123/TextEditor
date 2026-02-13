@@ -68,6 +68,11 @@
             // scroll bottom
 
             // I have to subtract something...
+            // I'm lost but this works...
+            // listElement.scrollBy(x = 0, y = );
+
+            // oi I'm out of time this is working but I think it "works until it doesn't" kinda code
+            // the < 0 is possible of ? or > sc?
             listElement.scrollTop += (cursorTop - listElement.scrollTop);
             // oh no I have 7 minutes until bedtime
         }
