@@ -63,6 +63,7 @@ Welcome to your new app.
     private IEnumerable<(string CssClass, string DataButton, string Text)> ButtonsProvider(Person person)
     {
         yield return ("btn btn-danger", "delete", "Delete");
+        yield return ("btn btn-info", "view", "View");
     }
 
     private Task AddRandomPersonToListOnClick()
