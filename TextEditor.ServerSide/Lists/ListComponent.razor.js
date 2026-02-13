@@ -147,6 +147,12 @@
                         this.setCursorIndex(this.cursorIndex + 1);
                     }
                     break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    if (this.cursorIndex > 0) {
+                        this.setCursorIndex(this.cursorIndex - 1);
+                    }
+                    break;
             }
         });
 
