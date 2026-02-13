@@ -67,7 +67,8 @@
             //
             // scroll bottom
 
-            listElement.scrollTop = cursorTop;
+            // I have to subtract something...
+            listElement.scrollTop += (cursorTop - listElement.scrollTop);
             // oh no I have 7 minutes until bedtime
         }
     }
