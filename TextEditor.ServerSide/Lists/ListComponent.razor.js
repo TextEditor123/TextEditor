@@ -185,61 +185,111 @@
 
         listElement.addEventListener('keydown', event => {
             switch (event.key) {
-                case 'ArrowDown':
-                    event.preventDefault();
-                    if (this.cursorIndex < this.totalCount - 1) {
-                        this.setCursorIndex(this.cursorIndex + 1);
-                    }
-                    break;
-                case 'ArrowUp':
-                    event.preventDefault();
-                    if (this.cursorIndex > 0) {
-                        this.setCursorIndex(this.cursorIndex - 1);
-                    }
-                    break;
-                case 'ArrowRight':
-                    event.preventDefault();
-                    // TODO: if the subFocusIndex is -1, give an outline to the node.
-                    if (this.cursorIndex - this.mostRecentSkip >= childrenContainerImmediateElement.children.length) {
-                        this.subFocusIndex = -1;
-                        this.scrollCursorIntoView();
-                        return;
-                    }
-                    let node = childrenContainerImmediateElement.children[this.cursorIndex - this.mostRecentSkip];
-                    if (this.subFocusIndex >= node.children.length - 1) {
-                        this.subFocusIndex = -1;
-                        this.scrollCursorIntoView();
-                    }
-                    else {
-                        let index = this.subFocusIndex + 1;
-                        for (; index < node.children.length; index++) {
-                            let child = node.children[index];
-                            if (child.style.tabindex != 0) {
-                                this.subFocusIndex = index;
-                                child.focus();
-                                break;
+                case 'ArrowLeft':
+                    {
+                        event.preventDefault();
+                        // TODO: if the subFocusIndex is -1, give an outline to the cursor.
+                        if (this.cursorIndex - this.mostRecentSkip >= childrenContainerImmediateElement.children.length) {
+                            this.subFocusIndex = -1;
+                            this.scrollCursorIntoView();
+                            return;
+                        }
+                        let node = childrenContainerImmediateElement.children[this.cursorIndex - this.mostRecentSkip];
+                        if (this.subFocusIndex >= node.children.length) {
+                            this.subFocusIndex = -1;
+                            this.scrollCursorIntoView();
+                        }
+                        else {
+                            let foundElement = false;
+                            if (this.subFocusIndex > 0) {
+                                let index = this.subFocusIndex - 1;
+                                for (; index >= 0; index--) {
+                                    let child = node.children[index];
+                                    if (child.style.tabindex != 0) {
+                                        this.subFocusIndex = index;
+                                        child.focus();
+                                        foundElement = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!foundElement) {
+                                this.subFocusIndex = -1;
+                                this.scrollCursorIntoView();
                             }
                         }
+                        break;
                     }
-                    break;
+                case 'ArrowDown':
+                    {
+                        event.preventDefault();
+                        if (this.cursorIndex < this.totalCount - 1) {
+                            this.setCursorIndex(this.cursorIndex + 1);
+                        }
+                        break;
+                    }
+                case 'ArrowUp':
+                    {
+                        event.preventDefault();
+                        if (this.cursorIndex > 0) {
+                            this.setCursorIndex(this.cursorIndex - 1);
+                        }
+                        break;
+                    }
+                case 'ArrowRight':
+                    {
+                        event.preventDefault();
+                        // TODO: if the subFocusIndex is -1, give an outline to the cursor.
+                        if (this.cursorIndex - this.mostRecentSkip >= childrenContainerImmediateElement.children.length) {
+                            this.subFocusIndex = -1;
+                            this.scrollCursorIntoView();
+                            return;
+                        }
+                        let node = childrenContainerImmediateElement.children[this.cursorIndex - this.mostRecentSkip];
+                        if (this.subFocusIndex >= node.children.length - 1) {
+                            this.subFocusIndex = -1;
+                            this.scrollCursorIntoView();
+                        }
+                        else {
+                            let foundElement = false;
+                            let index = this.subFocusIndex + 1;
+                            for (; index < node.children.length; index++) {
+                                let child = node.children[index];
+                                if (child.style.tabindex != 0) {
+                                    this.subFocusIndex = index;
+                                    child.focus();
+                                    foundElement = true;
+                                    break;
+                                }
+                            }
+                            if (!foundElement) {
+                                this.subFocusIndex = -1;
+                                this.scrollCursorIntoView();
+                            }
+                        }
+                        break;
+                    }
                 case 'Enter':
-                    event.preventDefault();
-                    if (event.target === listElement) {
-                        this.scrollCursorIntoView();
+                    {
+                        event.preventDefault();
+                        if (event.target === listElement) {
+                            this.scrollCursorIntoView();
+                        }
+                        let dataButtonValue = event.target.getAttribute("data-button");
+                        if (!dataButtonValue) {
+                            dataButtonValue = "";
+                        }
+                        if (dataButtonValue == "delete") {
+                            // if you await UI still receives keyboard events? I feel like I've never seen someone await this but it screams out for you to await it with that Async suffix.
+                            this.dotNetObjectReference.invokeMethodAsync("OnDelete", this.cursorIndex - this.mostRecentSkip);
+                            listElement.focus();
+                            this.subFocusIndex = -1;
+                        }
+                        else {
+                            this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, dataButtonValue);
+                        }
+                        break;
                     }
-                    let dataButtonValue = event.target.getAttribute("data-button");
-                    if (!dataButtonValue) {
-                        dataButtonValue = "";
-                    }
-                    if (dataButtonValue == "delete") {
-                        this.dotNetObjectReference.invokeMethodAsync("OnDelete", this.cursorIndex - this.mostRecentSkip);
-                        listElement.focus();
-                        this.subFocusIndex = -1;
-                    }
-                    else {
-                        this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, dataButtonValue);
-                    }
-                    break;
             }
         });
 
