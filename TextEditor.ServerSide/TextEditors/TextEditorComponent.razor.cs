@@ -17,6 +17,9 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
 
     public async Task SetTextAsync(string text)
     {
+        // you don't need "traits" you can still stream from db without objects sitting because you squashed them into the UI
+        // but wait how do you identify later point hmmm maybe traits wasn't idk
+
         if (_myJsObjectInstance is not null)
         {
             await _myJsObjectInstance.InvokeAsync<string>("setText", text);
