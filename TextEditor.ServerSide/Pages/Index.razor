@@ -53,13 +53,16 @@ Welcome to your new app.
                             {
                                 await JS.InvokeVoidAsync("alert", dataButton);
                             }
-                            
                             break;
                         case ListComponentEventKind.Delete:
                             _personList.Remove(person);
                             await (_listComponent?.SetTotalCountAsync(_personList.Count) ?? Task.CompletedTask);
                             return;
                         case ListComponentEventKind.Enter:
+                            if (!string.IsNullOrWhiteSpace(dataButton))
+                            {
+                                await JS.InvokeVoidAsync("alert", dataButton);
+                            }
                             break;
                     }
                 }/*,

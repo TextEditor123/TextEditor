@@ -217,6 +217,7 @@
                             if (child.style.tabindex != 0) {
                                 this.subFocusIndex = index;
                                 child.focus();
+                                break;
                             }
                         }
                     }
