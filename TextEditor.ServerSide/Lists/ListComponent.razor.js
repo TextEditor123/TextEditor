@@ -46,7 +46,10 @@
         if (this.cursorIndex == cursorIndex) return;
 
         this.cursorIndex = cursorIndex;
+        this.scrollCursorIntoView();
+    }
 
+    scrollCursorIntoView() {
         let listElement = document.getElementById(this.htmlId);
         if (!listElement || listElement.children.length != this.countWellknownImmediateElements) return;
 
