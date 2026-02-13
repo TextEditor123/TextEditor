@@ -81,12 +81,13 @@
         // This is a copy and pasted example from dev tools of just a text render fragment that was using C#:'Path.GetRandomFileName()' twice to generate text.
         measureLineHeightElement.innerHTML = "wwwe3w5r.vgc jmfgv034.wno<button class=\"btn btn-danger\">Delete</button>";
         listElement.appendChild(measureLineHeightElement);
-        this.setItemHeight(Math.ceil(measureLineHeightElement.getBoundingClientRect().height));
+        let itemHeight = Math.ceil(measureLineHeightElement.getBoundingClientRect().height);
         listElement.removeChild(measureLineHeightElement);
         if (this.itemHeight < 1) {
             this.initializedSuccessfully = false;
             return;
         }
+        this.setItemHeight(itemHeight);
 
         cursorElement.className = 'list-component-cursor';
 
