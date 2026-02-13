@@ -40,7 +40,7 @@ Welcome to your new app.
                 (skip, take) => _personList.Skip(skip).Take(take),
                 _personList.Count,
                 _personRenderFragment,
-                (eventKind, person) =>
+                (eventKind, person, dataButton) =>
                 {
                     switch (eventKind)
                     {

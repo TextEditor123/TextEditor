@@ -61,6 +61,8 @@
                 _virtualizedResult.Add(item);
                 <div @key="item" style="@localCache_StyleCss">
                     @_childContent!(item)
+
+                    @* In the JavaScript: if (dataButtonValue == "delete")... *@
                     <button class="btn btn-danger" data-button="delete">Delete</button>
                 </div>
             }

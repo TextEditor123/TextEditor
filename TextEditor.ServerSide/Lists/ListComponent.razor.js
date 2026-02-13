@@ -206,11 +206,16 @@
                     if (event.target === listElement) {
                         this.scrollCursorIntoView();
                     }
-                    let aaa = event.target.getAttribute("data-button");
-                    if (!aaa) {
-                        aaa = "";
+                    let dataButtonValue = event.target.getAttribute("data-button");
+                    if (!dataButtonValue) {
+                        dataButtonValue = "";
                     }
-                    this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, aaa);
+                    if (dataButtonValue == "delete") {
+                        this.dotNetObjectReference.invokeMethodAsync("OnDelete", indexClicked);
+                    }
+                    else {
+                        this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex, dataButtonValue);
+                    }
                     break;
             }
         });
