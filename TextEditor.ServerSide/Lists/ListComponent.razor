@@ -20,7 +20,7 @@
     *@
     <div></div>
 
-    @if (_items is null)
+    @if (_itemsProviderDelegate is null)
     {
         <text>Items is null</text>
     }
@@ -39,7 +39,7 @@
     else
     {
         var localCache_StyleCss = $"height: {_itemHeight}px; position: relative;";
-        foreach (var item in _items)
+        foreach (var item in _itemsProviderDelegate.Invoke(skip: 0, take: 10))
         {
             <div @key="item" style="@localCache_StyleCss">
                 @_childContent(item)

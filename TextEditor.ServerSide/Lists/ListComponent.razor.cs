@@ -71,6 +71,14 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
 
     private Func<TItem, Task>? _deleteOnClickFunc;
 
+    /// <summary>
+    /// If you pull the IEnumerable from a source that can change between the time that the UI is rendered,
+    /// and the UI is clicked, then it can change out from under you.
+    /// 
+    /// So, you need to store the virtualized result.
+    /// </summary>
+    private List<TItem> _virtualizedResult = new();
+
     private int _id;
     private string _htmlId;
 
@@ -114,25 +122,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
 
             StateHasChanged();
         }
-
-        // Any high frequency events will either be
-        // - handled entirely in JavaScript
-        // - throttled
-        // ... thus this: OnAfterRenderAsync, non-firstRender; logic is negligible.
-        //
-        if (_items is null && _itemCount != 0)
-        {
-            if (_myJsObjectInstance is not null)
-            {
-                await SetItemCount(0);
-                await _myJsObjectInstance.InvokeVoidAsync("setItemCount", 0);
-            }
-        }
-        else if (_items.Count != _itemCount)
-        {
-            await SetItemCount(_itemCount);
-            
-        }
     }
 
     /// <summary>
@@ -151,12 +140,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// And I just don't feel like looking into this at the moment.
     /// </summary>
     public async Task InitializeAsync(
-        IEnumerable<TItem>? items,
+        ItemsProviderDelegate? itemsProviderDelegate,
+        int totalCount,
         RenderFragment<TItem>? childContent,
         Func<TItem, Task>? deleteOnClickFunc,
         int itemHeightOverride = 0)
     {
-        _items = items;
+        await SetItemsProviderDelegate(itemsProviderDelegate, totalCount);
         _childContent = childContent;
         _deleteOnClickFunc = deleteOnClickFunc;
         if (itemHeightOverride > 0)
@@ -196,7 +186,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    public async Task SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount)
+    public async Task SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount, bool skipStateHasChangedInvocation = false)
     {
         _itemsProviderDelegate = itemsProviderDelegate;
         if (_totalCount != totalCount)
@@ -204,7 +194,9 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             await SetTotalCount(totalCount, skipStateHasChangedInvocation: true);
         }
         _totalCount = totalCount;
-        StateHasChanged();
+
+        if (!skipStateHasChangedInvocation)
+            StateHasChanged();
     }
 
     /// <summary>
@@ -240,7 +232,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [JSInvokable]
     public void OnClick(int indexClicked)
     {
-        if (_items is null || _deleteOnClickFunc is null || indexClicked < 0)
+        if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0)
             return;
 
         var index = 0;
