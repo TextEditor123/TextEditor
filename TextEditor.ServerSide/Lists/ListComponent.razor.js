@@ -4,6 +4,12 @@
     dotNetObjectReference;
     itemHeight = 1; // no decimal places, >= 1
     cursorIndex = 0;
+    subFocusIndex = -1; // Each "node" has at minimum a delete button displayed.
+                        // This index tracks whether focus is being given to a the list component,
+                        // or a child element of the element that the cursorIndex targets.
+                        // 
+                        // -1: the list component has focus.
+                        // otherwise, the index of the node's child elements that has focus.
     totalCount;
     countWellknownImmediateElements = 3;
     indexCursorImmediateElement = 0;
@@ -157,6 +163,12 @@
                     }
                     break;
                 case 'ArrowUp':
+                    event.preventDefault();
+                    if (this.cursorIndex > 0) {
+                        this.setCursorIndex(this.cursorIndex - 1);
+                    }
+                    break;
+                case 'ArrowRight':
                     event.preventDefault();
                     if (this.cursorIndex > 0) {
                         this.setCursorIndex(this.cursorIndex - 1);
