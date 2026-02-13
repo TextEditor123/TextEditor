@@ -49,7 +49,11 @@ Welcome to your new app.
                     switch (eventKind)
                     {
                         case ListComponentEventKind.Click:
-                            await JS.InvokeVoidAsync("alert", dataButton);
+                            if (!string.IsNullOrWhiteSpace(dataButton))
+                            {
+                                await JS.InvokeVoidAsync("alert", dataButton);
+                            }
+                            
                             break;
                         case ListComponentEventKind.Delete:
                             _personList.Remove(person);
