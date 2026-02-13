@@ -133,7 +133,7 @@
         // Using vanilla JS throttle with trailing edge support
         const handleScroll = this.throttle(() => {
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
-        }, 100, { leading: true, trailing: true });
+        }, 90, { leading: true, trailing: true });
 
         listElement.addEventListener('scroll', handleScroll);
 
