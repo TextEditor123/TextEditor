@@ -133,14 +133,12 @@
         // Using vanilla JS throttle with trailing edge support
         const handleScroll = this.throttle(() => {
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
-        }, 200, { leading: true, trailing: true });
+        }, 100, { leading: true, trailing: true });
 
         listElement.addEventListener('scroll', handleScroll);
 
         this.initializedSuccessfully = true;
     }
-
-    
 
     // Google AI overview for "javascript throttle trailing edge" generated this code:
     // It looks correct / correct-enough for a test run and see what happens.
