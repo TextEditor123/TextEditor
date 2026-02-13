@@ -79,6 +79,8 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// </summary>
     private List<TItem> _virtualizedResult = new();
 
+    private ListVirtualizationRequest _listVirtualizationRequest;
+
     private int _id;
     private string _htmlId;
 
@@ -123,6 +125,8 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             {
                 _itemHeight = await _myJsObjectInstance.InvokeAsync<int>("getItemHeight");
             }
+
+            _listVirtualizationRequest = await _myJsObjectInstance.InvokeAsync<ListVirtualizationRequest>("getListVirtualizationRequest");
 
             StateHasChanged();
         }

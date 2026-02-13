@@ -2,7 +2,7 @@
     htmlId;
     initializedSuccessfully;
     dotNetObjectReference;
-    itemHeight; // no decimal places, >= 1
+    itemHeight = 1; // no decimal places, >= 1
     cursorIndex;
     totalCount;
 
@@ -19,6 +19,15 @@
 
     getItemHeight() {
         return this.itemHeight;
+    }
+
+    getListVirtualizationRequest() {
+        let listChildrenContainerElement = document.getElementById(this.htmlId);
+
+        return {
+            Skip: listChildrenContainerElement.scrollTop / this.itemHeight,
+            Take: listChildrenContainerElement.offsetHeight / this.itemHeight,
+        };
     }
 
     setTotalCount(totalCount) {
