@@ -86,11 +86,15 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     private int _itemHeight;
     private int _totalCount;
 
-    protected override void OnParametersSet()
+    protected override Task OnParametersSetAsync()
     {
         if (TotalCount != _totalCount)
         {
-            SetTotalCount(_totalCount);
+            return SetTotalCount(_totalCount);
+        }
+        else
+        {
+            return Task.CompletedTask;
         }
     }
 
@@ -200,7 +204,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>
-    /// This method serves as an alternative to the TotalCount property.
+    /// The TotalCount property likely negates any need to invoke this method externally from the component itself.
     /// </summary>
     public async Task SetTotalCount(int totalCount, bool skipStateHasChangedInvocation = false)
     {
@@ -235,10 +239,10 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0)
             return;
 
-        var index = 0;
+        var index = skip;
         var success = false;
         var foundElement = default(TItem);
-        foreach (var element in _items)
+        foreach (var element in _virtualizedResult)
         {
             if (index == indexClicked)
             {
