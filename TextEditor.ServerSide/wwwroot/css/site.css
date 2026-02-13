@@ -67,6 +67,12 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
+.list-component {
+    position: relative;
+}
+
 .list-component-cursor {
     background-color: aqua;
+    position: absolute;
+    width: 100%;
 }
