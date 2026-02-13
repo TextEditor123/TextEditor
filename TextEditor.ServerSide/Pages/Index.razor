@@ -39,6 +39,7 @@ Welcome to your new app.
             await _listComponent.InitializeAsync(
                 (skip, take) => _personList.Skip(skip).Take(take),
                 _personList.Count,
+                ButtonsProvider,
                 _personRenderFragment,
                 (eventKind, person, dataButton) =>
                 {
@@ -57,6 +58,11 @@ Welcome to your new app.
                 itemHeightOverride: 500*/);
         }
         // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.
+    }
+
+    private IEnumerable<(string CssClass, string DataButton, string Text)> ButtonsProvider(Person person)
+    {
+        yield return ("btn btn-danger", "delete", "Delete");
     }
 
     private Task AddRandomPersonToListOnClick()

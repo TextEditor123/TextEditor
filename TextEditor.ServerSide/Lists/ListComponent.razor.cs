@@ -129,6 +129,8 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>
+    /// buttonsProviderFunc: it is recommended to yield return each tuple which represents a button.
+    /// 
     /// onEventFunc needs to tell the component the new totalCount if it has changed,
     /// additionally it must tell the component to re-render.
     /// |
