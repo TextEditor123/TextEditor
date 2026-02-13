@@ -111,12 +111,14 @@
 
         cursorElement.className = 'list-component-cursor';
 
+        let childrenContainerImmediateElement = listElement.children[this.indexChildrenContainerImmediateElement];
+
         listElement.addEventListener('click', event => {
             let parentBoundingClientRect = listElement.getBoundingClientRect();
             let relativeY = event.clientY - parentBoundingClientRect.top;
             let indexClicked = -1;
-            for (let i = 0; i < listElement.children.length; i++) {
-                let childElement = listElement.children[i];
+            for (let i = 0; i < childrenContainerImmediateElement.children.length; i++) {
+                let childElement = childrenContainerImmediateElement.children[i];
                 let childBoundingClientRect = childElement.getBoundingClientRect();
                 let relativeChildTop = childBoundingClientRect.top - parentBoundingClientRect.top;
                 if (relativeY >= relativeChildTop && relativeY < relativeChildTop + childBoundingClientRect.height) {
