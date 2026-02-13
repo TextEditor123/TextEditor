@@ -55,7 +55,21 @@
 
         let cursorElement = listElement.children[this.indexCursorImmediateElement];
         cursorElement.style.height = this.itemHeight + "px";
-        cursorElement.style.top = this.cursorIndex * this.itemHeight + "px";
+        let cursorTop = this.cursorIndex * this.itemHeight;
+        cursorElement.style.top = cursorTop + "px";
+
+        if (cursorTop < listElement.scrollTop) {
+            // scroll top
+            listElement.scrollTop = cursorTop;
+        }
+        else if (cursorTop + this.itemHeight >= listElement.scrollTop + listElement.clientHeight) {
+            // clientHeight is used purposefully so the scrollbar is accounted for.
+            //
+            // scroll bottom
+
+            listElement.scrollTop = cursorTop;
+            // oh no I have 7 minutes until bedtime
+        }
     }
 
     setItemHeight(itemHeight) {
