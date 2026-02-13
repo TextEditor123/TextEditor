@@ -53,7 +53,9 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// Otherwise, editing this list without the UI synchronization context
     /// could result in an "enumeration was modified exception".
     /// </summary>
-    private ICollection<TItem>? _items { get; set; } // IEnumerable this and track a total count separately?
+    private Aaa? _itemsDelegate { get; set; } // IEnumerable this and track a total count separately?
+
+    delegate IEnumerable<TItem> Aaa(int skip, int take);
 
     /// <summary>
     /// Blazor has a nice syntax for 'RenderFragment ChildContent' when it is a parameter.
