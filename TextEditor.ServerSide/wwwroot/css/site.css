@@ -80,3 +80,10 @@ a, .btn-link {
     width: 100%;
     left: 0;
 }
+
+.list-component-virtualization {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+}
