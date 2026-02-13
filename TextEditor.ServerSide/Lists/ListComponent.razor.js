@@ -99,6 +99,7 @@
         }
 
         let cursorElement = listElement.children[this.indexCursorImmediateElement];
+        cursorElement.className = 'list-component-cursor';
 
         let measureLineHeightElement = document.createElement('div');
         // This is a copy and pasted example from dev tools of just a text render fragment that was using C#:'Path.GetRandomFileName()' twice to generate text.
@@ -111,8 +112,6 @@
             return;
         }
         this.setItemHeight(itemHeight);
-
-        cursorElement.className = 'list-component-cursor';
 
         let childrenContainerImmediateElement = listElement.children[this.indexChildrenContainerImmediateElement];
 

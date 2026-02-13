@@ -119,6 +119,13 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>
+    /// onEventFunc needs to tell the component the new totalCount if it has changed,
+    /// additionally it must tell the component to re-render.
+    /// |
+    /// If you set the totalCount, this can implicitly cause the re-render unless you specify 'skipStateHasChangedInvocation: false'
+    /// There also is Public_StateHasChanged(...). A lot of other public methods will work too.
+    /// 
+    /// 
     /// The itemHeight is measured on the first render by putting a text node as the render fragment's resulting content.
     /// i.e.: Each node looks like this:<br/>
     /// ```<br/>
@@ -239,7 +246,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             return Task.CompletedTask;
 
         return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked]);
-        //StateHasChanged();
     }
     
     [JSInvokable]
@@ -252,7 +258,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             return Task.CompletedTask;
 
         return _onEventFunc.Invoke(ListComponentEventKind.Delete, _virtualizedResult[indexClicked]);
-        //StateHasChanged();
     }
     
     [JSInvokable]
@@ -265,7 +270,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             return Task.CompletedTask;
 
         return _onEventFunc.Invoke(ListComponentEventKind.Enter, _virtualizedResult[cursorIndex]);
-        //StateHasChanged();
     }
 
     [JSInvokable]
