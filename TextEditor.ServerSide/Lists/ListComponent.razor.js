@@ -187,7 +187,7 @@
                         for (; index < node.children.length; i++) {
                             let child = node.children.length[index];
                             if (child.style.tabindex != 0) {
-                                this.subFocusIndex = index;
+                                this.subFocusIndex = index;//dah*
                                 child.focus();
                             }
                         }
