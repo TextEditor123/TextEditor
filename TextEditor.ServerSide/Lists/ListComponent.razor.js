@@ -127,25 +127,20 @@
             }
         });
 
-        listElement.addEventListener('scroll', () => {
-            // I need the trailing edge
+        // Google AI overview for "javascript throttle trailing edge" generated the 'throttle(...)' function
+        // ... I then asked how to invoke it and it gave me this:
+        //
+        // Using vanilla JS throttle with trailing edge support
+        const handleScroll = this.throttle(() => {
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
-        });
+        }, 200, { leading: true, trailing: true });
+
+        listElement.addEventListener('scroll', handleScroll);
 
         this.initializedSuccessfully = true;
     }
 
-    // what is this though...
-    //
-    // Using vanilla JS throttle with trailing edge support
-    const handleScroll = throttle(() => {
-        const scrollBottom = window.scrollY + window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight;
-
-        if (scrollBottom > docHeight - 500) {
-            console.log('Fetching more content...');
-        }
-    }, 200, { leading: true, trailing: true });
+    
 
     // Google AI overview for "javascript throttle trailing edge" generated this code:
     // It looks correct / correct-enough for a test run and see what happens.
