@@ -75,4 +75,5 @@ a, .btn-link {
     background-color: aqua;
     position: absolute;
     width: 100%;
+    left: 0;
 }

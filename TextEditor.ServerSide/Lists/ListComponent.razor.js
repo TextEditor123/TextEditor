@@ -3,7 +3,8 @@
     initializedSuccessfully;
     dotNetObjectReference;
     itemHeight; // no decimal places, >= 1
-    itemCount;
+    cursorIndex;
+    totalCount;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -18,6 +19,28 @@
 
     getItemHeight() {
         return this.itemHeight;
+    }
+
+    setTotalCount(totalCount) {
+        this.totalCount = totalCount;
+        if (this.cursorIndex >= this.totalCount) {
+            this.setCursorIndex(this.totalCount == 0 ? 0 : this.totalCount - 1);
+        }
+    }
+
+    setCursorIndex(cursorIndex) {
+        if (this.cursorIndex == cursorIndex) return;
+
+        this.cursorIndex = cursorIndex;
+
+        let listChildrenContainerElement = document.getElementById(this.htmlId);
+        if (!listChildrenContainerElement) return;
+
+        if (listChildrenContainerElement.children.length == 0) return;
+
+        let cursorElement = listChildrenContainerElement.children[0];
+        cursorElement.style.height = this.itemHeight + "px";
+        cursorElement.style.top = this.cursorIndex * this.itemHeight + "px";
     }
 
     setItemHeight(itemHeight) {
@@ -89,9 +112,8 @@
             switch (event.key) {
                 case 'ArrowDown':
                     event.preventDefault();
-                    if () {
-
-                        // ... validate set items index range
+                    if (this.cursorIndex < this.totalCount - 1) {
+                        setCursorIndex(this.cursorIndex + 1);
                     }
                     break;
             }
