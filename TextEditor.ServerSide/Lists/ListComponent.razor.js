@@ -172,14 +172,20 @@
                 case 'ArrowRight':
                     event.preventDefault();
                     // TODO: if the subFocusIndex is -1, give an outline to the node.
-                    if (this.subFocusIndex >= childrenContainerImmediateElement.children.length - 1) {
+                    if (this.cursorIndex >= childrenContainerImmediateElement.children.length) {
+                        this.subFocusIndex = -1;
+                        this.scrollCursorIntoView();
+                        return;
+                    }
+                    let node = childrenContainerImmediateElement.children[this.cursorIndex];
+                    if (this.subFocusIndex >= node.children.length - 1) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
                     }
                     else {
                         let index = this.subFocusIndex == -1 ? 0 : this.subFocusIndex + 1;
-                        for (; index < childrenContainerImmediateElement.children.length; i++) {
-                            let child = childrenContainerImmediateElement.children.length[index];
+                        for (; index < node.children.length; i++) {
+                            let child = node.children.length[index];
                             if (child.style.tabindex != 0) {
                                 this.subFocusIndex = index;
                                 child.focus();
