@@ -56,6 +56,11 @@
             foreach (var item in enumerable)
             {
                 // leaf?
+                // data attribute leaf
+                // data-button="leaf"
+                // data-button="node"
+                //
+                // arrowright/left if(leaf) otherwise (node) ???
 
                 _virtualizedResult.Add(item);
                 <div @key="item" style="@localCache_StyleCss">
