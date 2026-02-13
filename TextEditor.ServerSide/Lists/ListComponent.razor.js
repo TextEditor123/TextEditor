@@ -15,6 +15,7 @@
     indexCursorImmediateElement = 0;
     indexVirtualizationImmediateElement = 1;
     indexChildrenContainerImmediateElement = 2;
+    mostRecentSkip;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -35,8 +36,9 @@
         let listElement = document.getElementById(this.htmlId);
         if (!listElement || listElement.children.length != this.countWellknownImmediateElements) return;
 
+        this.mostRecentSkip = Math.floor(listElement.scrollTop / this.itemHeight);
         return {
-            Skip: Math.floor(listElement.scrollTop / this.itemHeight),
+            Skip: this.mostRecentSkip,
             Take: Math.ceil(listElement.offsetHeight / this.itemHeight),
         };
     }
@@ -176,13 +178,13 @@
                 case 'ArrowRight':
                     event.preventDefault();
                     // TODO: if the subFocusIndex is -1, give an outline to the node.
-                    if (this.cursorIndex >= childrenContainerImmediateElement.children.length) {
+                    if (this.cursorIndex - this.mostRecentSkip >= childrenContainerImmediateElement.children.length) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
                         cursorElement.focus();
                         return;
                     }
-                    let node = childrenContainerImmediateElement.children[this.cursorIndex];
+                    let node = childrenContainerImmediateElement.children[this.cursorIndex - this.mostRecentSkip];
                     if (this.subFocusIndex >= node.children.length - 1) {
                         this.subFocusIndex = -1;
                         this.scrollCursorIntoView();
@@ -200,9 +202,11 @@
                     }
                     break;
                 case 'Enter':
-                    event.preventDefault();
-                    this.scrollCursorIntoView();
-                    this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex);
+                    if (event.target === listElement) {
+                        event.preventDefault();
+                        this.scrollCursorIntoView();
+                        this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex);
+                    }
                     break;
             }
         });
