@@ -254,28 +254,11 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
             return;
 
-        var index = _listVirtualizationRequest.Skip;
-        var success = false;
-        var foundElement = default(TItem);
-        foreach (var element in _virtualizedResult)
-        {
-            if (index == indexClicked)
-            {
-                success = true;
-                foundElement = element;
-                break;
-            }
-            else
-            {
-                ++index;
-            }
-        }
+        if (indexClicked >= _virtualizedResult.Count)
+            return;
 
-        if (success && foundElement is not null)
-        {
-            _deleteOnClickFunc.Invoke(foundElement);
-            StateHasChanged();
-        }
+        _deleteOnClickFunc.Invoke(_virtualizedResult[indexClicked]);
+        StateHasChanged();
     }
 
     [JSInvokable]
