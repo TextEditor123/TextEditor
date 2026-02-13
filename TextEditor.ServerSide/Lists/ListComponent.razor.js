@@ -154,7 +154,15 @@
                 }
             }
             if (deleteButtonWasClicked) {
+                let index = this.cursorIndex; // I'm worried the index will change out from under me when the deletion occurs.
+                let beforeCursorDeletionOccurred = index > 0 && indexClicked < index;
                 this.dotNetObjectReference.invokeMethodAsync("OnDelete", indexClicked);
+                if (beforeCursorDeletionOccurred) {
+                    this.setCursorIndex(index - 1);
+                }
+                else {
+                    listElement.focus();
+                }
             }
             else {
                 this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
