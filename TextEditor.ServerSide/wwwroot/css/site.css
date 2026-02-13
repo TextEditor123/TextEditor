@@ -75,7 +75,7 @@ a, .btn-link {
 }
 
 .list-component-cursor {
-    background-color: aqua;
+    background-color: #b4dcff;
     position: absolute;
     width: 100%;
     left: 0;

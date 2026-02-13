@@ -55,6 +55,8 @@
             var enumerable = _itemsProviderDelegate!.Invoke(skip: _listVirtualizationRequest.Skip, take: _listVirtualizationRequest.Take);
             foreach (var item in enumerable)
             {
+                // leaf?
+
                 _virtualizedResult.Add(item);
                 <div @key="item" style="@localCache_StyleCss">
                     @_childContent!(item)
