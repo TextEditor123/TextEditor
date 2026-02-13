@@ -18,12 +18,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
 
-    /// <summary>
-    /// onchange, this property will set the _totalCount in C# and JavaScript
-    /// </summary>
-    [Parameter, EditorRequired]
-    public int TotalCount { get; set; }
-
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
     /// <summary>
@@ -87,18 +81,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     private bool _myJsObjectInstanceInitializedSuccessfully;
     private int _itemHeight;
     private int _totalCount;
-
-    protected override Task OnParametersSetAsync()
-    {
-        if (TotalCount != _totalCount)
-        {
-            return SetTotalCountAsync(TotalCount);
-        }
-        else
-        {
-            return Task.CompletedTask;
-        }
-    }
 
     protected override void OnInitialized()
     {
@@ -210,9 +192,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    /// <summary>
-    /// The TotalCount property likely negates any need to invoke this method externally from the component itself.
-    /// </summary>
     public async Task SetTotalCountAsync(int totalCount, bool skipStateHasChangedInvocation = false)
     {
         if (_myJsObjectInstance is not null)
