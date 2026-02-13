@@ -40,7 +40,20 @@ Welcome to your new app.
                 (skip, take) => _personList.Skip(skip).Take(take),
                 _personList.Count,
                 _personRenderFragment,
-                person => { _personList.Remove(person); return _listComponent?.SetTotalCountAsync(_personList.Count) ?? Task.CompletedTask; }/*,
+                (eventKind, person) =>
+                {
+                    switch (eventKind)
+                    {
+                        case ListComponentEventKind.Click:
+                            break;
+                        case ListComponentEventKind.Delete:
+                            _personList.Remove(person);
+                            return _listComponent?.SetTotalCountAsync(_personList.Count) ?? Task.CompletedTask;
+                        case ListComponentEventKind.Enter:
+                            break;
+                    }
+                    return Task.CompletedTask;
+                }/*,
                 itemHeightOverride: 500*/);
         }
         // The base for 'OnAfterRenderAsync' does nothing, thus you don't need to include it anywhere.

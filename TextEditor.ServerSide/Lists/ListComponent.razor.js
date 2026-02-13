@@ -120,6 +120,7 @@
             let parentBoundingClientRect = listElement.getBoundingClientRect();
             let relativeY = event.clientY - parentBoundingClientRect.top;
             let indexClicked = -1;
+            let deleteButtonWasClicked = false;
             for (let i = 0; i < childrenContainerImmediateElement.children.length; i++) {
                 let childElement = childrenContainerImmediateElement.children[i];
                 let childBoundingClientRect = childElement.getBoundingClientRect();
@@ -127,19 +128,25 @@
                 if (relativeY >= relativeChildTop && relativeY < relativeChildTop + childBoundingClientRect.height) {
                     // If the state is invalid a div with solely a text node is displayed.
                     // ... I'm not sure whether a text node would be in the '.children' property.
+                    indexClicked = i;
                     if (childElement.children.length > 0) {
                         let buttonElement = childElement.children[childElement.children.length - 1];
                         let buttonBoundingClientRect = buttonElement.getBoundingClientRect();
                         if (event.clientX >= buttonBoundingClientRect.left && event.clientX < buttonBoundingClientRect.left + buttonBoundingClientRect.width &&
                             event.clientY >= buttonBoundingClientRect.top && event.clientY < buttonBoundingClientRect.top + buttonBoundingClientRect.height) {
 
-                            indexClicked = i;
+                            deleteButtonWasClicked = true;
                         }
                     }
                     break;
                 }
             }
-            this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
+            if (deleteButtonWasClicked) {
+                this.dotNetObjectReference.invokeMethodAsync("OnDelete", indexClicked);
+            }
+            else {
+                this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
+            }
         });
 
         listElement.addEventListener('keydown', event => {
@@ -155,6 +162,10 @@
                     if (this.cursorIndex > 0) {
                         this.setCursorIndex(this.cursorIndex - 1);
                     }
+                    break;
+                case 'Enter':
+                    event.preventDefault();
+                    this.dotNetObjectReference.invokeMethodAsync("OnEnter", this.cursorIndex);
                     break;
             }
         });

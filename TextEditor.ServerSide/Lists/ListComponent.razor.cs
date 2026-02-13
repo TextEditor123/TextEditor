@@ -63,7 +63,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// </summary>
     private RenderFragment<TItem>? _childContent;
 
-    private Func<TItem, Task>? _deleteOnClickFunc;
+    private Func<ListComponentEventKind, TItem, Task>? _onEventFunc;
 
     /// <summary>
     /// If you pull the IEnumerable from a source that can change between the time that the UI is rendered,
@@ -137,12 +137,12 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         ItemsProviderDelegate? itemsProviderDelegate,
         int totalCount,
         RenderFragment<TItem>? childContent,
-        Func<TItem, Task>? deleteOnClickFunc,
+        Func<ListComponentEventKind, TItem, Task>? onEventFunc,
         int itemHeightOverride = 0)
     {
         await SetItemsProviderDelegateAsync(itemsProviderDelegate, totalCount);
         _childContent = childContent;
-        _deleteOnClickFunc = deleteOnClickFunc;
+        _onEventFunc = onEventFunc;
         if (itemHeightOverride > 0)
         {
             if (_myJsObjectInstance is not null)
@@ -192,6 +192,8 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
+    // TODO: if enter or space originates from delete button then run delete
+
     public async Task SetTotalCountAsync(int totalCount, bool skipStateHasChangedInvocation = false)
     {
         if (_myJsObjectInstance is not null)
@@ -228,16 +230,42 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// I believe that just means for those cases this will run asynchronously?
     /// </summary>
     [JSInvokable]
-    public void OnClick(int indexClicked)
+    public Task OnClick(int indexClicked)
     {
-        if (_itemsProviderDelegate is null || _deleteOnClickFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
-            return;
+        if (_itemsProviderDelegate is null || _onEventFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
+            return Task.CompletedTask;
 
         if (indexClicked >= _virtualizedResult.Count)
-            return;
+            return Task.CompletedTask;
 
-        _deleteOnClickFunc.Invoke(_virtualizedResult[indexClicked]);
-        StateHasChanged();
+        return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked]);
+        //StateHasChanged();
+    }
+    
+    [JSInvokable]
+    public Task OnDelete(int indexClicked)
+    {
+        if (_itemsProviderDelegate is null || _onEventFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
+            return Task.CompletedTask;
+
+        if (indexClicked >= _virtualizedResult.Count)
+            return Task.CompletedTask;
+
+        return _onEventFunc.Invoke(ListComponentEventKind.Delete, _virtualizedResult[indexClicked]);
+        //StateHasChanged();
+    }
+    
+    [JSInvokable]
+    public Task OnEnter(int cursorIndex)
+    {
+        if (_itemsProviderDelegate is null || _onEventFunc is null || cursorIndex < 0 || _virtualizedResult.Count == 0)
+            return Task.CompletedTask;
+
+        if (cursorIndex >= _virtualizedResult.Count)
+            return Task.CompletedTask;
+
+        return _onEventFunc.Invoke(ListComponentEventKind.Enter, _virtualizedResult[cursorIndex]);
+        //StateHasChanged();
     }
 
     [JSInvokable]
