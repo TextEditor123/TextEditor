@@ -134,4 +134,34 @@
 
         this.initializedSuccessfully = true;
     }
+
+    // Google AI overview for "javascript throttle trailing edge" generated this code:
+    // It looks correct / correct-enough for a test run and see what happens.
+    throttle(func, wait, options = { leading: false, trailing: true }) {
+        let timer = null;
+        let lastArgs;
+        let context;
+
+        const timeoutFunc = () => {
+            if (options.trailing && lastArgs) {
+                func.apply(context, lastArgs);
+                lastArgs = null;
+                timer = setTimeout(timeoutFunc, wait);
+            } else {
+                timer = null;
+            }
+        };
+
+        return function (...args) {
+            context = this;
+            lastArgs = args;
+
+            if (!timer) {
+                if (options.leading) {
+                    func.apply(context, args);
+                }
+                timer = setTimeout(timeoutFunc, wait);
+            }
+        };
+    }
 }
