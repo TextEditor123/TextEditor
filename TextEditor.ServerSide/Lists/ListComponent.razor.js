@@ -56,7 +56,7 @@
             return;
         }
 
-        this.initializedSuccessfully = true;
+        cursorElement.className = 'list-component-cursor';
 
         listChildrenContainerElement.addEventListener('click', event => {
             let parentBoundingClientRect = listChildrenContainerElement.getBoundingClientRect();
@@ -84,6 +84,18 @@
             this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
         });
 
-        cursorElement.className = 'list-component-cursor';
+        listChildrenContainerElement.addEventListener('keydown', event => {
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    if () {
+
+                        // ... validate set items index range
+                    }
+                    break;
+            }
+        });
+
+        this.initializedSuccessfully = true;
     }
 }
