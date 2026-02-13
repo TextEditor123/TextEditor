@@ -43,8 +43,10 @@
     else
     {
         var localCache_StyleCss = $"height: {_itemHeight}px; position: relative;";
-        foreach (var item in _itemsProviderDelegate.Invoke(skip: 0, take: 10))
+        var enumerable = _itemsProviderDelegate.Invoke(skip: _listVirtualizationRequest.Skip, take: _listVirtualizationRequest.Take);
+        foreach (var item in enumerable)
         {
+            _virtualizedResult.Add(item);
             <div @key="item" style="@localCache_StyleCss">
                 @_childContent(item)
                 <button class="btn btn-danger">Delete</button>

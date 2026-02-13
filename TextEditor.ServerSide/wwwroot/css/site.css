@@ -69,6 +69,7 @@ a, .btn-link {
 
 .list-component {
     position: relative;
+    height: 300px;
 }
 
 .list-component-cursor {
