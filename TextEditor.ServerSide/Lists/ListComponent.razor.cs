@@ -53,25 +53,24 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// Otherwise, editing this list without the UI synchronization context
     /// could result in an "enumeration was modified exception".
     /// </summary>
-    private Aaa? _itemsDelegate { get; set; } // IEnumerable this and track a total count separately?
-
-    delegate IEnumerable<TItem> Aaa(int skip, int take);
+    private ItemsProviderDelegate? _itemsProviderDelegate;
+    public delegate IEnumerable<TItem> ItemsProviderDelegate(int skip, int take);
 
     /// <summary>
     /// Blazor has a nice syntax for 'RenderFragment ChildContent' when it is a parameter.
     /// RenderFragment is however a delegate, and thus I'd prefer to avoid it being a parameter
     /// in order to not incur this component re-rendering when a parent component does.
     /// </summary>
-    private RenderFragment<TItem>? _childContent { get; set; }
+    private RenderFragment<TItem>? _childContent;
 
-    private Func<TItem, Task>? _deleteOnClickFunc { get; set; }
+    private Func<TItem, Task>? _deleteOnClickFunc;
 
     private int _id;
     private string _htmlId;
 
     private bool _myJsObjectInstanceInitializedSuccessfully;
     private int _itemHeight;
-    private int _itemCount;
+    private int _totalCount;
 
     protected override void OnInitialized()
     {
@@ -183,9 +182,10 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    public void SetItems(ICollection<TItem>? items) // dah
+    public void SetItemsProviderDelegate(ItemsProviderDelegate? itemsProviderDelegate, int totalCount)
     {
-        _items = items;
+        _itemsProviderDelegate = itemsProviderDelegate;
+        _totalCount = totalCount;
         StateHasChanged();
     }
     
