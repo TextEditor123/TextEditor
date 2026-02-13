@@ -3,6 +3,7 @@
     initializedSuccessfully;
     dotNetObjectReference;
     itemHeight; // no decimal places, >= 1
+    itemCount;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;

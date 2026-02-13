@@ -53,7 +53,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// Otherwise, editing this list without the UI synchronization context
     /// could result in an "enumeration was modified exception".
     /// </summary>
-    private IEnumerable<TItem>? _items { get; set; }
+    private ICollection<TItem>? _items { get; set; }
 
     /// <summary>
     /// Blazor has a nice syntax for 'RenderFragment ChildContent' when it is a parameter.
@@ -69,6 +69,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
 
     private bool _myJsObjectInstanceInitializedSuccessfully;
     private int _itemHeight;
+    private int _itemCount;
 
     protected override void OnInitialized()
     {
@@ -97,6 +98,25 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             }
 
             StateHasChanged();
+        }
+
+        // Any high frequency events will either be
+        // - handled entirely in JavaScript
+        // - throttled
+        // ... thus this: OnAfterRenderAsync, non-firstRender; logic is negligible.
+        //
+        if (_items is null && _itemCount != 0)
+        {
+            if (_myJsObjectInstance is not null)
+            {
+                await SetItemCount(0);
+                await _myJsObjectInstance.InvokeVoidAsync("setItemCount", 0);
+            }
+        }
+        else if (_items.Count != _itemCount)
+        {
+            await SetItemCount(_itemCount);
+            
         }
     }
 
@@ -161,7 +181,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    public void SetItems(IEnumerable<TItem>? items)
+    public void SetItems(ICollection<TItem>? items) // dah
     {
         _items = items;
         StateHasChanged();
@@ -209,6 +229,19 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         {
             _deleteOnClickFunc.Invoke(foundElement);
             StateHasChanged();
+        }
+    }
+
+    /// <summary>This method is purposefully not public (contrary to the pattern one might've expected based on the other methods).</summary>
+    private ValueTask SetItemCount(int itemCount)
+    {
+        if (_myJsObjectInstance is not null)
+        {
+            return _myJsObjectInstance.InvokeVoidAsync("setItemCount", 0);
+        }
+        else
+        {
+            return ValueTask.CompletedTask;
         }
     }
 
