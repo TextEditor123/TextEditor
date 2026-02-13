@@ -179,7 +179,7 @@
                 }
             }
             else {
-                this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked);
+                this.dotNetObjectReference.invokeMethodAsync("OnClick", indexClicked, dataButtonValue);
             }
         });
 

@@ -23,6 +23,9 @@ Welcome to your new app.
 }
 
 @code {
+    [Inject]
+    private IJSRuntime JS { get; set; } = null!;
+
     private ListComponent<Person>? _listComponent;
     private List<Person> _personList = new();
     private RenderFragment<Person>? _personRenderFragment;
@@ -41,19 +44,20 @@ Welcome to your new app.
                 _personList.Count,
                 ButtonsProvider,
                 _personRenderFragment,
-                (eventKind, person, dataButton) =>
+                async (eventKind, person, dataButton) =>
                 {
                     switch (eventKind)
                     {
                         case ListComponentEventKind.Click:
+                            await JS.InvokeVoidAsync("alert", dataButton);
                             break;
                         case ListComponentEventKind.Delete:
                             _personList.Remove(person);
-                            return _listComponent?.SetTotalCountAsync(_personList.Count) ?? Task.CompletedTask;
+                            await (_listComponent?.SetTotalCountAsync(_personList.Count) ?? Task.CompletedTask);
+                            return;
                         case ListComponentEventKind.Enter:
                             break;
                     }
-                    return Task.CompletedTask;
                 }/*,
                 itemHeightOverride: 500*/);
         }

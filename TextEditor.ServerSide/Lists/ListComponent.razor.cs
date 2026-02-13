@@ -253,7 +253,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
     /// I believe that just means for those cases this will run asynchronously?
     /// </summary>
     [JSInvokable]
-    public Task OnClick(int indexClicked)
+    public Task OnClick(int indexClicked, string dataButtonValue)
     {
         if (_itemsProviderDelegate is null || _onEventFunc is null || indexClicked < 0 || _virtualizedResult.Count == 0)
             return Task.CompletedTask;
@@ -261,7 +261,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
         if (indexClicked >= _virtualizedResult.Count)
             return Task.CompletedTask;
 
-        return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked], string.Empty);
+        return _onEventFunc.Invoke(ListComponentEventKind.Click, _virtualizedResult[indexClicked], dataButtonValue);
     }
     
     [JSInvokable]
