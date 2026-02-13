@@ -50,7 +50,7 @@
         shouldRenderEnumerable = true;
     }
 
-    <div style="top: @(_listVirtualizationRequest.Skip * _itemHeight)px;">
+    <div style="top: @(_listVirtualizationRequest.Skip * _itemHeight)px;" class="list-component-children">
         @* Null forgiving operator relative to 'shouldRenderEnumerable' bool *@
         @if (shouldRenderEnumerable)
         {

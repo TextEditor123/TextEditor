@@ -87,3 +87,7 @@ a, .btn-link {
     top: 0;
     width: 1px;
 }
+
+.list-component-children {
+    position: absolute;
+}
