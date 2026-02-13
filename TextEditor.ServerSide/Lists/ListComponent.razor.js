@@ -201,16 +201,20 @@
                         }
                         else {
                             let foundElement = false;
-                            if (this.subFocusIndex > 0) {
-                                let index = this.subFocusIndex - 1;
-                                for (; index >= 0; index--) {
-                                    let child = node.children[index];
-                                    if (child.style.tabindex != 0) {
-                                        this.subFocusIndex = index;
-                                        child.focus();
-                                        foundElement = true;
-                                        break;
-                                    }
+                            let index;
+                            if (this.subFocusIndex >= 0) {
+                                index = this.subFocusIndex - 1
+                            }
+                            else {
+                                index = node.children.length - 1;
+                            }
+                            for (; index >= 0; index--) {
+                                let child = node.children[index];
+                                if (child.style.tabindex != 0) {
+                                    this.subFocusIndex = index;
+                                    child.focus();
+                                    foundElement = true;
+                                    break;
                                 }
                             }
                             if (!foundElement) {
