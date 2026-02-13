@@ -25,8 +25,8 @@
         let listChildrenContainerElement = document.getElementById(this.htmlId);
 
         return {
-            Skip: listChildrenContainerElement.scrollTop / this.itemHeight,
-            Take: listChildrenContainerElement.offsetHeight / this.itemHeight,
+            Skip: Math.floor(listChildrenContainerElement.scrollTop / this.itemHeight),
+            Take: Math.ceil(listChildrenContainerElement.offsetHeight / this.itemHeight),
         };
     }
 
