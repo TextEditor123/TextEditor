@@ -79,6 +79,7 @@ export class TextEditor {
         cursor.editLength = 0;
     }
 
+    // TODO: You might have to finalizeEdit onscroll. otherwise scrolling back into view the line Blazor will ???
     async finalizeEdit(cursor) {
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
