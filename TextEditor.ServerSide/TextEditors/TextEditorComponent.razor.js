@@ -129,12 +129,15 @@ export class TextEditor {
                         // (end of line but prior to the line ending itself)
                         // The line ending isn't written to the span, it is represented by the encompassing div itself.
                         
-                        if (runColumnI == spanElement.textContent.length) {
+                        if (runColumnI == runColumnI + spanElement.textContent.length) {
                             if (i < originalLine.children.length - 1) {
                                 originalLine.insertBefore(cursor.gapElement, originalLine.children[i + 1]);
                                 break;
                             }
                             else {
+                                // I said I would put the gapElement within the existing span
+                                // to inherit the syntax highlighting but this way works better to start with.
+                                //
                                 originalLine.appendChild(cursor.gapElement);
                                 break;
                             }
