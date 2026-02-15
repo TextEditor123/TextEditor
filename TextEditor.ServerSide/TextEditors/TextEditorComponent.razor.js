@@ -22,7 +22,7 @@ class Cursor {
         if (!textEditor.editorElement) return;
 
         let cursorElement = textEditor.editorElement.children[textEditor.indexCursorImmediateElement];
-        cursorElement.style.left = 8 * this.positionIndex + "px";
+        cursorElement.style.left = textEditor.characterWidth * this.positionIndex + "px";
     }
 }
 
@@ -37,6 +37,8 @@ export class TextEditor {
     primaryCursor = new Cursor();
     cursorList = [];
     editorElement = null;
+    characterWidth = 1;
+    lineHeight = 1;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -114,13 +116,13 @@ export class TextEditor {
             return;
         }
 
-        this.getLineHeightAndCharacterWidth();
+        this.measureLineHeightAndCharacterWidth();
         this.registerHandles();
 
         this.initializedSuccessfully = true;
     }
 
-    getLineHeightAndCharacterWidth() {
+    measureLineHeightAndCharacterWidth() {
         let measureElement = document.createElement('div');
         measureElement.style.width = "fit-content";
         this.editorElement.appendChild(measureElement);
