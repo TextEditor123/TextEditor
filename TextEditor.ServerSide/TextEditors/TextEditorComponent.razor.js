@@ -63,6 +63,8 @@
             //     - While in JavaScript you know where the text is going to be inserted, you could perhaps
             //           make a span alongside the existing one. Then you know when you move the gap buffer contents into C#
             //           to delete your JavaScript span.
+            //     - You need to time the (I think it is called) "animation frame" so the user doesn't see the UI update without the text
+            //           due to JavaScript removing it then Blazor makes it appear again.
             //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
