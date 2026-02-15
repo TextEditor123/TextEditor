@@ -27,7 +27,7 @@ export class TextEditor {
     indexVirtualizationImmediateElement = 1;
     indexTextImmediateElement = 2;
     primaryCursor = new Cursor();
-    cursorList = new[];
+    cursorList = [];
     editorElement = null;
 
     constructor(htmlId, dotNetObjectReference) {
@@ -83,11 +83,11 @@ export class TextEditor {
             for (var i = 0; i < this.cursorList.length; i++) {
                 let cursor = this.cursorList[i];
 
-                if (!this.insertCanBatch(cursor)) {
+                if (this.insertCanBatch(cursor)) {
                     if (cursor.editKind != EditKind.None) {
                         await this.finalizeEdit(cursor);
                     }
-                    this.startEdit(cursor = cursor, editKind = EditKind.InsertLtr, editPosition = cursor.positionIndex, editLength = 0);
+                    this.startEdit(/*cursor*/ cursor, /*editKind*/ EditKind.InsertLtr, /*editPosition*/ cursor.positionIndex, /*editLength*/ 0);
                 }
 
                 this.insertDo(cursor);
