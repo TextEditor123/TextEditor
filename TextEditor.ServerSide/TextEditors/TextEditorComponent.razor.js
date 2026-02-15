@@ -184,6 +184,10 @@ export class TextEditor {
         if (cursor.lineIndex < textElement.children.length) {
             textElement.children[cursor.lineIndex].style.visibility = "";
         }
+        if (cursor.gapParentElement) {
+            cursor.gapParentElement.removeChild(cursor.gapElement);
+            cursor.gapParentElement = null;
+        }
         this.virtualLineElement.innerHTML = '';
     }
 
