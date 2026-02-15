@@ -16,6 +16,14 @@ class Cursor {
     editKind = EditKind.None;
     editPosition = 0;
     editLength = 0;
+
+    incrementPositionIndexAndUpdateUi(textEditor) {
+        this.positionIndex++;
+        if (!textEditor.editorElement) return;
+
+        let cursorElement = textEditor.editorElement.children[textEditor.indexCursorImmediateElement];
+        cursorElement.style.left = 8 * this.positionIndex + "px";
+    }
 }
 
 export class TextEditor {
@@ -69,10 +77,10 @@ export class TextEditor {
                cursor.positionIndex !== cursor.editPosition + cursor.editLength;
     }
 
-    insertDo(cursor) {
+    insertDo(cursor, event) {
         cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
-        cursor.positionIndex++;
+        cursor.incrementPositionIndexAndUpdateUi(this);
     }
 
     async onKeydown(event) {
@@ -90,7 +98,7 @@ export class TextEditor {
                     this.startEdit(/*cursor*/ cursor, /*editKind*/ EditKind.InsertLtr, /*editPosition*/ cursor.positionIndex, /*editLength*/ 0);
                 }
 
-                this.insertDo(cursor);
+                this.insertDo(cursor, event);
             }
         }
     }
