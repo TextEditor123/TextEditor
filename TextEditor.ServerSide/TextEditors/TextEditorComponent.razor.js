@@ -40,15 +40,25 @@ export class TextEditor {
         return this.initializedSuccessfully;
     }
 
+    startEdit(cursor, editKind, editPosition, editLength) {
+        cursor.editKind = editKind;
+        cursor.editPosition = editPosition;
+        cursor.editLength = editLength;
+    }
+
+    clearEdit(cursor) {
+        cursor.editKind = EditKind.None;
+        cursor.editPosition = 0;
+        cursor.editLength = 0;
+    }
+
     async finalizeEdit(cursor) {
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
         }
         await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.editPosition, cursor.gapBuffer);
 
-        cursor.editKind = EditKind.None;
-        cursor.editPosition = 0;
-        cursor.editLength = 0;
+        this.clearEdit(cursor);
     }
 
     InsertCanBatch(cursor) {
@@ -57,11 +67,7 @@ export class TextEditor {
             cursor.positionIndex !== cursor.editPosition + cursor.editLength;
     }
 
-    startEdit(cursor, editKind, editPosition, editLength) {
-        cursor.editKind = editKind;
-        cursor.editPosition = editPosition;
-        cursor.editLength = editLength;
-    }
+    
 
     async onKeydown(event) {
         //let cursorElement = this.editorElement.children[this.indexCursorImmediateElement];
