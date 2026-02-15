@@ -129,7 +129,10 @@ export class TextEditor {
                         // '<=' because end-of-line text insertion.
                         // (end of line but prior to the line ending itself)
                         // The line ending isn't written to the span, it is represented by the encompassing div itself.
-                        
+
+
+                        //this.virtualLineElement
+
                         if (runColumnI == runColumnI + spanElement.textContent.length) {
                             if (i < this.virtualLineElement.children.length - 1) {
                                 cursor.gapParentElement = this.virtualLineElement;
