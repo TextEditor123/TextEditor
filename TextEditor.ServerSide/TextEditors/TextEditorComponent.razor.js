@@ -73,20 +73,6 @@ export class TextEditor {
             return;
         }
 
-        // TODO: What impact if any are there in relation to high frequency lambdas?...
-        // ...In C# they may or may not be cached, but essentially the best thing is to just make a method if it is obviously sensible to do so.
-        // So, in JavaScript should I do the same here?
-        //
-        /*
-        Google AI Overview for: "JavaScript do frequently invoked lambdas cause more than one allocation"
-
-        It sources mdn (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management#:~:text=This%20algorithm%20assumes%20the%20knowledge,collect%20all%20non%2Dreachable%20objects.):
-        ------------------------------------------------------------------------------------------------------------------------------
-        > Therefore, while the function definition itself doesn't get re-allocated on every call, the data and context associated with
-          each invocation (especially for closures) do involve new memory allocation cycles. JavaScript's automatic garbage collection
-          manages the cleanup of these temporary contexts when they are no longer reachable.
-        ------------------------------------------------------------------------------------------------------------------------------
-        */
         this.editorElement.addEventListener('keydown', this.onKeydown.bind(this));
 
         this.initializedSuccessfully = true;
