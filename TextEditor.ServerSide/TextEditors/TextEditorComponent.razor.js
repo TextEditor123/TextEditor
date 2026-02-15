@@ -51,7 +51,7 @@
             // - tab keys
             // - multicursor
             //     - Surely you woudn't want to invoke dotnet interop foreach multicursor when typing character by character?
-            //     - Althought perhaps you could maintain a gap buffer in JavaScript.
+            //     - Although perhaps you could maintain a gap buffer in JavaScript.
             //     - Then the non-contiguous edits are sent via dotnet interop...
             //     - Interestingly, if you did this you'd probably also with JavaScript just modify the text in the span,
             //           and immediately any new text inherits the contiguous syntax highlighting.
@@ -59,6 +59,7 @@
             //           while inserting text.
             //     - However it upon inserting the JavaScript gap buffer into C# would result in that line needing to be
             //           rendered again since the virtual DOM doesn't know the text is actually up to date.
+            //     - If it only does a diff though it thinks it needs to insert the text, so it doubles up the text...
             //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
