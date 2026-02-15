@@ -97,27 +97,46 @@ export class TextEditor {
 
 
             // TODO: columnIndex
+            let goalColumnI = cursor.positionIndex;
+
+            // The insertion is always preferential towards the left span in the case
+            // that the insertion is at the end of one span, and the start of the next.
             //
-            // ... you know what will cause your line index to change so you don't need
-            // to consult with C# to know the line end positions.
-            //
-            // Part of how you know is the HTML itself for an ArrowRight case.
-            //
-            // TODO: Eventually spans will be used to group characters and apply syntax highlighting.
-            // This isn't written yet so each div is currently just a div with... I can just add a span right now.
-            //
-            let columnIndex = 0;
-            for (var i = 0; i < originalLine.children.length; i++) {
-                let spanElement = originalLine.children[i];
-                if (columnIndex <= columnIndex + spanElement.textContent.length) {
-                    // found the span that contains the to-be insertion split
-                    // '<=' because end-of-line text insertion.
-                    // (end of line but prior to the line ending itself)
-                    // The line ending isn't written to the span, it is represented by the encompassing div itself.
-                    break;
-                }
-                else {
-                    columnIndex += spanElement.textContent.length;
+            // Thus, the '0' index case needs to be explicitly written?
+            if (goalColumnI == 0) {
+                parent.insertBefore(child, parent.children[i]);
+            }
+            else {
+                //
+                // ... you know what will cause your line index to change so you don't need
+                // to consult with C# to know the line end positions.
+                //
+                // Part of how you know is the HTML itself for an ArrowRight case.
+                //
+                // TODO: Eventually spans will be used to group characters and apply syntax highlighting.
+                // This isn't written yet so each div is currently just a div with... I can just add a span right now.
+                //
+                let runColumnI = 0;
+                for (var i = 0; i < originalLine.children.length; i++) {
+                    let spanElement = originalLine.children[i];
+                    if (goalColumnI <= runColumnI + spanElement.textContent.length) {
+                        // found the span that contains the to-be insertion split
+                        // '<=' because end-of-line text insertion.
+                        // (end of line but prior to the line ending itself)
+                        // The line ending isn't written to the span, it is represented by the encompassing div itself.
+
+                        
+                        if (runColumnI == spanElement.textContent.length) {
+                            spanElement.appendChild(cursor.gapElement);
+                        }
+                        else if () {
+
+                        }
+                        break;
+                    }
+                    else {
+                        runColumnI += spanElement.textContent.length;
+                    }
                 }
             }
         }
