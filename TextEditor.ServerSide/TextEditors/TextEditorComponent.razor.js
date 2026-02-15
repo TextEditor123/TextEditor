@@ -18,6 +18,9 @@ class Cursor {
     editLength = 0;
 
     // TODO: You might have to overlay the edit, and target oh geez
+    // TODO: When the edit is finalized, if it only is a matter of...
+    // ...like they gonna continue using the same virtual line, then like
+    // keep the virtual line and continue using it.
     gapElement = null;
 
     incrementPositionIndexAndUpdateUi(textEditor) {
@@ -42,6 +45,7 @@ export class TextEditor {
     editorElement = null;
     characterWidth = 1;
     lineHeight = 1;
+    virtualLine;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -130,9 +134,6 @@ export class TextEditor {
     }
 
     async onKeydown(event) {
-        //let cursorElement = this.editorElement.children[this.indexCursorImmediateElement];
-        //let textElement = this.editorElement.children[this.indexTextImmediateElement];
-
         if (event.key.length === 1) {
             for (var i = 0; i < this.cursorList.length; i++) {
                 let cursor = this.cursorList[i];
