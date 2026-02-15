@@ -52,12 +52,13 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
     }
     
     [JSInvokable]
-    public Task InserText_ByteArray(byte[] byteArray)
+    public Task InserText_ByteArray(int positionIndex, byte[] byteArray)
     {
+        int insertOffset = 0;
         for (int i = 0; i < byteArray.Length; i++)
         {
             if (byteArray[i] != '\0')
-                _model.Builder.Append((char)byteArray[i]);
+                _model.Builder.Insert(positionIndex + insertOffset++, (char)byteArray[i]);
         }
         
         StateHasChanged();

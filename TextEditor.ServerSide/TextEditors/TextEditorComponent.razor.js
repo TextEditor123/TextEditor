@@ -44,7 +44,7 @@ export class TextEditor {
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
         }
-        await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.gapBuffer);
+        await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.editPosition, cursor.gapBuffer);
         cursor.editLength = 0;
         cursor.editKind = EditKind.None;
     }
