@@ -41,6 +41,12 @@
             //
             // Without await it presumably is fire and forget, but I've also tried
             // to make the lambda async and add await for previous cases and then the code stops working...
+            //
+            // If I want to move the cursor from JavaScript alone by checking the HTML then
+            // it is probably very important that I get this timing correct.
+            //
+            // Lest Blazor update the UI as I'm moving the cursor in JavaScript?
+            //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
