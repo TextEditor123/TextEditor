@@ -75,6 +75,8 @@ export class TextEditor {
                     But perhaps the event keys like 'a', 'b', 'c' are so common that they'll have an optimization in place?
 
                     Also, as I typed that, I might be able to just store the utf-8 version of the "character"/"event-string-key"
+
+                    'Byte-array interop'
                     */
 
                     this.primaryCursor.gapBuffer.
