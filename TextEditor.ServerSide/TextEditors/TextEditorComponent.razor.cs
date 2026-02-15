@@ -21,11 +21,11 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
     private TextEditorModel _model = new();
 
     private int _id;
-    private string _htmlId;
+    private string _htmlId = null!;
 
-    private bool _myJsObjectInstanceInitializedSuccessfully;
-    private int _itemHeight;
-    private int _totalCount;
+    //private bool _myJsObjectInstanceInitializedSuccessfully;
+    //private int _itemHeight;
+    //private int _totalCount;
 
     protected override void OnInitialized()
     {
@@ -42,6 +42,13 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./TextEditors/TextEditorComponent.razor.js");
             _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor", _htmlId, _dotNetObjectReference);
         }
+    }
+
+    [JSInvokable]
+    public void OnKeyDown(string key)
+    {
+        _model.Builder.Append(key);
+        StateHasChanged();
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()

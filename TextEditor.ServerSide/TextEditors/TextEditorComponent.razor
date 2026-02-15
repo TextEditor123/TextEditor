@@ -5,43 +5,49 @@
     In this list component I don't want to incur that cost.
 *@
 
-<div class="text-editor-component" id="@_htmlId" tabindex="0">
+<div class="te_component" id="@_htmlId" tabindex="0">
     
-    @{
-        var indexCharacter = 0;
-        var indexLine = 0;
-    }
+    <div class="te_virtualization"></div>
+    <div class="te_cursor"></div>
 
-    @while (indexCharacter < _model.Builder.Length)
-    {
-        @*
-            In the case where the text on the line is the same, AND no line modifications were performed,
-            then this will key be useful.
+    <div class="te_text">
+        @{
+            var indexCharacter = 0;
+            var indexLine = 0;
+        }
 
-            But, if you change any lines it won't be helpful so a better way should probably be done.
+        @while (indexCharacter < _model.Builder.Length)
+        {
+            @*
+                In the case where the text on the line is the same, AND no line modifications were performed,
+                then this will key be useful.
 
-            The '@key' always bothered me because I wanted a way to skip determining the diff for various elements entirely.
-            I can't remember whether I had an '@key' in my previous editors.
-            It was because I was always thinkings about exactly that... yet just cause I want even further
-            optimization doesn't mean you should just forgo the middle optimization lol?
-        *@
-        <div @key="indexLine">
-            @for (; indexCharacter < _model.Builder.Length; indexCharacter++)
-            {
-                var c = _model.Builder[indexCharacter];
-                if (c == '\n')
+                But, if you change any lines it won't be helpful so a better way should probably be done.
+
+                The '@key' always bothered me because I wanted a way to skip determining the diff for various elements entirely.
+                I can't remember whether I had an '@key' in my previous editors.
+                It was because I was always thinkings about exactly that... yet just cause I want even further
+                optimization doesn't mean you should just forgo the middle optimization lol?
+            *@
+            <div @key="indexLine">
+                @for (; indexCharacter < _model.Builder.Length; indexCharacter++)
                 {
-                    ++indexCharacter; // 'break' won't increment the for loop
-                    ++indexLine;
-                    break;
+                    var c = _model.Builder[indexCharacter];
+                    if (c == '\n')
+                    {
+                        ++indexCharacter; // 'break' won't increment the for loop
+                        ++indexLine;
+                        break;
+                    }
+                    else
+                    {
+                        <text>@c</text>
+                    }
                 }
-                else
-                {
-                    <text>@c</text>
-                }
-            }
-        </div>
-    }
+            </div>
+        }
+    </div>
+
 
 </div>
 

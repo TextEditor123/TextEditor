@@ -229,8 +229,6 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
             StateHasChanged();
     }
 
-    // TODO: if enter or space originates from delete button then run delete
-
     public async Task SetTotalCountAsync(int totalCount, bool skipStateHasChangedInvocation = false)
     {
         if (_myJsObjectInstance is not null)

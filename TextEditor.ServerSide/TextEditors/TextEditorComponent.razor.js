@@ -1,4 +1,17 @@
-﻿export class TextEditor {
+﻿class Cursor {
+    lineIndex = 0;
+    columnIndex = 0;
+    positionIndex = 0;
+    gapBuffer = [];
+
+    /*constructor() {
+        this.lineIndex = 0;
+        this.columnIndex = 0;
+        this.positionIndex = 0;
+    }*/
+}
+
+export class TextEditor {
     htmlId;
     dotNetObjectReference;
     initializedSuccessfully;
@@ -6,6 +19,7 @@
     indexCursorImmediateElement = 0;
     indexVirtualizationImmediateElement = 1;
     indexTextImmediateElement = 2;
+    primaryCursor = new Cursor();
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -33,8 +47,13 @@
         // So, in JavaScript should I do the same here?
         //
         editorElement.addEventListener('keydown', event => {
-            switch (event.key) {
+            /*switch (event.key) {
 
+            }*/
+
+            if (event.key.length === 1) {
+                this.primaryCursor.gapBuffer.push(event.key);
+                //this.dotNetObjectReference.invokeMethodAsync("OnKeyDown", event.key);
             }
 
             // TODO: Understand await with respect to the 'invokeMethodAsync'.
@@ -66,7 +85,6 @@
             //     - You need to time the (I think it is called) "animation frame" so the user doesn't see the UI update without the text
             //           due to JavaScript removing it then Blazor makes it appear again.
             //
-            this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
         this.initializedSuccessfully = true;

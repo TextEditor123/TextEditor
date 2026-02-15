@@ -92,8 +92,21 @@ a, .btn-link {
     position: absolute;
 }
 
-.text-editor-component {
+.te_component {
     position: relative;
     height: 300px;
     overflow: scroll;
+}
+
+.te_virtualization {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+}
+
+.te_cursor {
+    width: 2.5px;
+    position: absolute;
+    background-color: currentColor;
 }
