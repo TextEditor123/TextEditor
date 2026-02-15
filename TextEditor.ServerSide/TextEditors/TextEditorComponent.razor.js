@@ -82,6 +82,10 @@ export class TextEditor {
     // TODO: You might have to finalizeEdit onscroll. otherwise scrolling back into view the line Blazor will ???
     // ...you should be able to insert the text that they're typing using JavaScript either in a span or directly as part of the same text node that already exists.
     // "all you need to do" is guarantee that by the time Blazor registers that line as having changed that you've removed your javascript insertions by that point.
+    // -----
+    // Wait... what if you just used JavaScript to make the style of that line invisible, then overlayed a new div that contains the same text
+    // but now you can do whatever you want cause Blazor doesn't know it exists
+    // and Blazor doesn't know of style on the original div so it won't clobber anything???
     async finalizeEdit(cursor) {
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
