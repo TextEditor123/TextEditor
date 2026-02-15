@@ -55,6 +55,10 @@
             //     - Then the non-contiguous edits are sent via dotnet interop...
             //     - Interestingly, if you did this you'd probably also with JavaScript just modify the text in the span,
             //           and immediately any new text inherits the contiguous syntax highlighting.
+            //     - Blazor maintains the virtual DOM and from their perspective they wouldn't even know I modified the text with JavaScript
+            //           while inserting text.
+            //     - However it upon inserting the JavaScript gap buffer into C# would result in that line needing to be
+            //           rendered again since the virtual DOM doesn't know the text is actually up to date.
             //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
