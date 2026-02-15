@@ -104,24 +104,25 @@ export class TextEditor {
     }
 
     registerHandles() {
-        this.editorElement = document.getElementById(this.htmlId); 
+        this.editorElement.addEventListener('keydown', this.onKeydown.bind(this));
+    }
+
+    initialize() {
+        this.editorElement = document.getElementById(this.htmlId);
         if (!this.editorElement || this.editorElement.children.length != this.countWellknownImmediateElements) {
             this.initializedSuccessfully = false;
             return;
         }
 
-        this.editorElement.addEventListener('keydown', this.onKeydown.bind(this));
+        this.getLineHeightAndCharacterWidth();
+        this.registerHandles();
 
         this.initializedSuccessfully = true;
     }
 
-    initialize() {
-        this.getLineHeightAndCharacterWidth();
-        this.registerHandles();
-    }
-
     getLineHeightAndCharacterWidth() {
         let measureElement = document.createElement('div');
+        this.editorElement.appendChild(measureElement);
 
         let sampleTextBuilder = [];
         for (var i = 0; i < 11; i++) {
@@ -145,6 +146,15 @@ export class TextEditor {
             sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
         }
         // TODO: What does 'const' mean.
-        let result = builder.join(""); // The result is "Hello world!"
+        measureElement.innerHTML = sampleTextBuilder.join("");
+
+        // TODO: You actually need to test what happens when the measureElement DOESN'T overflow too.
+        // It might measure as the width of the parent in this case.
+        // fit-content?
+
+        this.characterWidth = measureElement.offsetWidth / (36 * 11);
+        this.lineHeight = measureElement.offsetHeight;
+
+        this.editorElement.removeChild(measureElement);
     }
 }
