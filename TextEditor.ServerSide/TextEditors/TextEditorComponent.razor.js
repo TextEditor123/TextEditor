@@ -62,8 +62,10 @@ export class TextEditor {
         cursor.editLength = editLength;
 
         if (editKind == EditKind.InsertLtr) {
-            cursor.gapElement = document.createElement('div');
-            this.editorElement.appendChild(cursor.gapElement);
+            if (!cursor.gapElement) {
+                cursor.gapElement = document.createElement('div');
+                this.editorElement.appendChild(cursor.gapElement);
+            }
         }
     }
 
@@ -91,6 +93,7 @@ export class TextEditor {
         cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
         cursor.incrementPositionIndexAndUpdateUi(this);
+        // TODO: This concatenation also isn't all too great
         cursor.gapElement.innerHTML += event.key;
     }
 
