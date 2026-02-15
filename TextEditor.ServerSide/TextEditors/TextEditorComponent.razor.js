@@ -151,20 +151,20 @@ export class TextEditor {
                         }
                         else {
                             let relativeColumnI = goalColumnI - runColumnI;
-                            let aaaText = spanElement.textContent.substring(0, relativeColumnI);
-                            let bbbText = spanElement.textContent.substring(relativeColumnI);
+                            let firstText = spanElement.textContent.substring(0, relativeColumnI);
+                            let lastText = spanElement.textContent.substring(relativeColumnI);
                             spanElement.innerHTML = '';
 
-                            let aaaElement = document.createElement('span');
-                            aaaElement.innerHTML = aaaText;
-                            this.virtualLineElement.appendChild(aaaElement);
+                            let firstElement = document.createElement('span');
+                            firstElement.innerHTML = firstText;
+                            this.virtualLineElement.appendChild(firstElement);
 
                             cursor.gapParentElement = this.virtualLineElement;
                             this.virtualLineElement.appendChild(cursor.gapElement);
 
-                            let bbbElement = document.createElement('span');
-                            bbbElement.innerHTML = bbbText;
-                            this.virtualLineElement.appendChild(bbbElement);
+                            let lastElement = document.createElement('span');
+                            lastElement.innerHTML = lastText;
+                            this.virtualLineElement.appendChild(lastElement);
 
                             this.virtualLineElement.removeChild(spanElement);
 
