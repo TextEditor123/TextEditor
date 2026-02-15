@@ -17,11 +17,8 @@ class Cursor {
     editPosition = 0;
     editLength = 0;
 
-    // TODO: You might have to overlay the edit, and target oh geez
-    // TODO: When the edit is finalized, if it only is a matter of...
-    // ...like they gonna continue using the same virtual line, then like
-    // keep the virtual line and continue using it.
-    gapElement = null;
+    // Each cursor needs a span they can write text to.
+    gapElement;
 
     incrementPositionIndexAndUpdateUi(textEditor) {
         this.positionIndex++;
@@ -45,7 +42,12 @@ export class TextEditor {
     editorElement = null;
     characterWidth = 1;
     lineHeight = 1;
-    virtualLine;
+
+    // TODO: You might have to overlay the edit, and target oh geez
+    // TODO: When the edit is finalized, if it only is a matter of...
+    // ...like they gonna continue using the same virtual line, then like
+    // keep the virtual line and continue using it.
+    virtualLineElement = null;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -66,24 +68,44 @@ export class TextEditor {
         cursor.editLength = editLength;
 
         if (editKind == EditKind.InsertLtr) {
-            if (!cursor.gapElement) {
-                cursor.gapElement = document.createElement('div');
-                cursor.gapElement.className = 'te_gap-element';
-                cursor.gapElement.style.left = 0;
-                cursor.gapElement.style.top = 0;
-            }
             // TODO: single cursor but your edit spans more than one line.
             // TODO: If you same line multicursor you need to share the virtual line
             // TODO: multicursor where each cursor different line
             this.addVirtualLine(cursor);
-            this.editorElement.appendChild(cursor.gapElement);
         }
     }
 
     addVirtualLine(cursor) {
+        if (!cursor.gapElement) {
+            cursor.gapElement = document.createElement('span');
+        }
+
         let textElement = this.editorElement.children[this.indexTextImmediateElement];
         if (cursor.lineIndex < textElement.children.length) {
+            let textElement = this.editorElement.children[this.indexTextImmediateElement];
+
+            if (!this.virtualLineElement) {
+                this.virtualLineElement = document.createElement('div');
+                this.virtualLineElement.className = 'te_virtual-line';
+                this.virtualLineElement.style.left = 0;
+                this.virtualLineElement.style.top = 0;
+                this.virtualLineElement.innerHTML = textElement.children[cursor.lineIndex].innerHTML;
+            }
+            
             textElement.children[cursor.lineIndex].style.visibility = "hidden";
+        }
+
+        this.editorElement.appendChild(this.virtualLineElement);
+
+        // TODO: columnIndex
+        //
+        // ... you know what will cause your line index to change so you don't need
+        // to consult with C# to know the line end positions.
+        //
+        // Part of how you know is the HTML itself for an ArrowRight case.
+        //
+        for (var i = 0; i < cursor.positionIndex) {
+
         }
     }
 
@@ -92,12 +114,12 @@ export class TextEditor {
         if (cursor.lineIndex < textElement.children.length) {
             textElement.children[cursor.lineIndex].style.visibility = "";
         }
+        this.virtualLineElement.innerHTML = '';
     }
 
     clearEdit(cursor) {
         if (cursor.editKind === EditKind.InsertLtr) {
             this.removeVirtualLine(cursor);
-            cursor.gapElement.innerHTML = '';
         }
         cursor.editKind = EditKind.None;
         cursor.editPosition = 0;
