@@ -44,7 +44,7 @@ export class TextEditor {
 
         this.cursorList.push(this.primaryCursor);
 
-        this.registerHandles();
+        this.initialize();
     }
 
     getInitializedSuccessfully() {
@@ -113,5 +113,36 @@ export class TextEditor {
         this.editorElement.addEventListener('keydown', this.onKeydown.bind(this));
 
         this.initializedSuccessfully = true;
+    }
+
+    initialize() {
+        this.getLineHeightAndCharacterWidth();
+        this.registerHandles();
+    }
+
+    getLineHeightAndCharacterWidth() {
+        let measureElement = document.createElement('div');
+
+        let sampleTextBuilder = [];
+        for (var i = 0; i < 11; i++) {
+            // This is quite silly.
+            // The font is intended to be monospace.
+            //
+            // Given the comment about monospace, all in all what this method does is:
+            // 36 characters repeated 11 times
+            //
+            // I've in the past found this to give the most accurrate character width.
+            //
+            // I don't want to store this string as one massive string that is 11 times the size,
+            // because then it has to sit (presumably) as an interned string or in some data section
+            // all app long.
+            //
+            // Since this is doing a "builder" and monospace, it might be similar to just append the number '0' for (36 * 11) times
+            //
+            // FURTHERMORE: I need to revisit calcuating the character width, this is somewhat of an early
+            // way I found to get it, perhaps it isn't quite so involved.
+            //
+            sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
+        }
     }
 }
