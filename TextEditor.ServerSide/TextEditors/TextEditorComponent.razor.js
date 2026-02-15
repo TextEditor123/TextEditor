@@ -103,18 +103,22 @@ export class TextEditor {
             // that the insertion is at the end of one span, and the start of the next.
             //
             // Thus, the '0' index case needs to be explicitly written?
+            //
+            // (also needs to be explicit due to an empty line)
+            //
             if (goalColumnI == 0) {
-                parent.insertBefore(child, parent.children[i]);
+                if (originalLine.children.length > 0) {
+                    originalLine.insertBefore(cursor.gapElement, originalLine.children[0]);
+                }
+                else {
+                    originalLine.appendChild(cursor.gapElement);
+                }
             }
             else {
-                //
                 // ... you know what will cause your line index to change so you don't need
                 // to consult with C# to know the line end positions.
                 //
                 // Part of how you know is the HTML itself for an ArrowRight case.
-                //
-                // TODO: Eventually spans will be used to group characters and apply syntax highlighting.
-                // This isn't written yet so each div is currently just a div with... I can just add a span right now.
                 //
                 let runColumnI = 0;
                 for (var i = 0; i < originalLine.children.length; i++) {
@@ -124,10 +128,16 @@ export class TextEditor {
                         // '<=' because end-of-line text insertion.
                         // (end of line but prior to the line ending itself)
                         // The line ending isn't written to the span, it is represented by the encompassing div itself.
-
                         
                         if (runColumnI == spanElement.textContent.length) {
-                            spanElement.appendChild(cursor.gapElement);
+                            if (i < originalLine.children.length - 1) {
+                                originalLine.insertBefore(cursor.gapElement, originalLine.children[i + 1]);
+                                break;
+                            }
+                            else {
+                                originalLine.appendChild(cursor.gapElement);
+                                break;
+                            }
                         }
                         else if () {
 
