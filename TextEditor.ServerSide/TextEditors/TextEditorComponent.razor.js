@@ -29,7 +29,7 @@
         let textElement = editorElement.children[this.indexTextImmediateElement];
 
         // TODO: What impact if any are there in relation to high frequency lambdas?...
-        // ...In C# they may or not be cached, but essentially the best thing is to just make a method if it is obviously sensible to do so.
+        // ...In C# they may or may not be cached, but essentially the best thing is to just make a method if it is obviously sensible to do so.
         // So, in JavaScript should I do the same here?
         //
         editorElement.addEventListener('keydown', event => {
