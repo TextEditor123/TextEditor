@@ -17,6 +17,7 @@ class Cursor {
     editPosition = 0;
     editLength = 0;
 
+    // TODO: You might have to overlay the edit, and target oh geez
     gapElement = null;
 
     incrementPositionIndexAndUpdateUi(textEditor) {
