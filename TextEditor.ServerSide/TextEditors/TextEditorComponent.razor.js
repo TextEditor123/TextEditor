@@ -36,6 +36,12 @@
             switch (event.key) {
 
             }
+
+            // TODO: Understand await with respect to the 'invokeMethodAsync'.
+            //
+            // Without await it presumably is fire and forget, but I've also tried
+            // to make the lambda async and add await for previous cases and then the code stops working...
+            this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
         this.initializedSuccessfully = true;
