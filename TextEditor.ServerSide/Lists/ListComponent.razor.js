@@ -1,7 +1,7 @@
 ﻿export class ListComponent {
     htmlId;
-    initializedSuccessfully;
     dotNetObjectReference;
+    initializedSuccessfully;
     itemHeight = 1; // no decimal places, >= 1
     cursorIndex = 0;
     subFocusIndex = -1; // Each "node" has at minimum a delete button displayed.

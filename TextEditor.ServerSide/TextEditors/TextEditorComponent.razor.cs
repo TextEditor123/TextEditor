@@ -40,7 +40,7 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
         {
             // Load the isolated JS module
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./TextEditors/TextEditorComponent.razor.js");
-            _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor");
+            _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor", _htmlId, _dotNetObjectReference);
         }
     }
 
