@@ -23,9 +23,6 @@ class Cursor {
 
         let cursorElement = textEditor.editorElement.children[textEditor.indexCursorImmediateElement];
         cursorElement.style.left = 8 * this.positionIndex + "px";
-
-        // spoiler alert: it's cause you copy and pasted the code for index...ImmediateElement from the tree view
-        // and you don't have the .razor of the text editor in the same order so you're changing the left of the virtualization.
     }
 }
 
@@ -34,8 +31,8 @@ export class TextEditor {
     dotNetObjectReference;
     initializedSuccessfully;
     countWellknownImmediateElements = 3;
-    indexCursorImmediateElement = 0;
-    indexVirtualizationImmediateElement = 1;
+    indexVirtualizationImmediateElement = 0;
+    indexCursorImmediateElement = 1;
     indexTextImmediateElement = 2;
     primaryCursor = new Cursor();
     cursorList = [];
