@@ -57,7 +57,7 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
         for (int i = 0; i < byteArray.Length; i++)
         {
             if (byteArray[i] != '\0')
-                _model.Builder.Append(byteArray[i]);
+                _model.Builder.Append((char)byteArray[i]);
         }
         
         StateHasChanged();
