@@ -64,12 +64,16 @@ export class TextEditor {
         if (editKind == EditKind.InsertLtr) {
             if (!cursor.gapElement) {
                 cursor.gapElement = document.createElement('div');
-                this.editorElement.appendChild(cursor.gapElement);
             }
+            this.editorElement.appendChild(cursor.gapElement);
         }
     }
 
     clearEdit(cursor) {
+        if (cursor.editKind === EditKind.InsertLtr) {
+            this.editorElement.removeChild(cursor.gapElement);
+            cursor.gapElement.innerHTML = '';
+        }
         cursor.editKind = EditKind.None;
         cursor.editPosition = 0;
         cursor.editLength = 0;
