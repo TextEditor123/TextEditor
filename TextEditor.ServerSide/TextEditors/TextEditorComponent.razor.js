@@ -47,6 +47,13 @@
             //
             // Lest Blazor update the UI as I'm moving the cursor in JavaScript?
             //
+            // If you intend to move the cursor with JavaScript alone then the two problematic cases are:
+            // - tab keys
+            // - multicursor
+            //     - Surely you woudn't want to invoke dotnet interop foreach multicursor when typing character by character?
+            //     - Althought perhaps you could maintain a gap buffer in JavaScript.
+            //     - Then the non-contiguous edits are sent via dotnet interop...
+            //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
 
