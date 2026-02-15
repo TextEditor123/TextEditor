@@ -67,7 +67,7 @@ export class TextEditor {
     }
 
     registerHandles() {
-        this.editorElement = document.getElementById(this.htmlId);
+        this.editorElement = document.getElementById(this.htmlId); 
         if (!this.editorElement || this.editorElement.children.length != this.countWellknownImmediateElements) {
             this.initializedSuccessfully = false;
             return;
@@ -87,7 +87,7 @@ export class TextEditor {
           manages the cleanup of these temporary contexts when they are no longer reachable.
         ------------------------------------------------------------------------------------------------------------------------------
         */
-        this.editorElement.addEventListener('keydown', this.onKeydown);
+        this.editorElement.addEventListener('keydown', this.onKeydown.bind(this));
 
         this.initializedSuccessfully = true;
     }
