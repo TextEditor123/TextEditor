@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Timers;
-using TextEditor.ServerSide.Lists;
 
 namespace TextEditor.ServerSide.TextEditors;
 

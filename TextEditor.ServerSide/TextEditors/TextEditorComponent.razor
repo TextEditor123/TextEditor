@@ -1,6 +1,33 @@
 ﻿
 
 <div class="text-editor-component" id="@_htmlId" tabindex="0">
-    TextEditorComponent
+    
+    @{
+        var indexCharacter = 0;
+        var indexLine = 0;
+    }
+
+    @while (indexCharacter < _model.Builder.Length)
+    {
+        @*
+            In the case where the text on the line is the same, AND no line modifications were performed,
+            then this will key be useful.
+
+            But, if you change any lines it won't be helpful so a better way should probably be done.
+        *@
+        <div @key="indexLine">
+            @for (; indexCharacter < _model.Builder.Length; indexCharacter++)
+            {
+                var c = _model.Builder[indexCharacter];
+                if (c == '\n')
+                {
+                    ++indexCharacter; // 'break' won't increment the for loop
+                    ++indexLine;
+                    break;
+                }
+            }
+        </div>
+    }
+
 </div>
 
