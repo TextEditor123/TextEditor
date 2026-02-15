@@ -122,6 +122,7 @@ export class TextEditor {
 
     getLineHeightAndCharacterWidth() {
         let measureElement = document.createElement('div');
+        measureElement.style.width = "fit-content";
         this.editorElement.appendChild(measureElement);
 
         let sampleTextBuilder = [];
@@ -143,9 +144,9 @@ export class TextEditor {
             // FURTHERMORE: I need to revisit calcuating the character width, this is somewhat of an early
             // way I found to get it, perhaps it isn't quite so involved.
             //
-            // I think this was 7.8...
-            //sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
-            // this is 100.45...
+            // This is '7.8813131313131315'
+            // sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
+            // this is 100.45... --- now it is 8.909090909090908
             sampleTextBuilder.push("a");
         }
         // TODO: What does 'const' mean.
