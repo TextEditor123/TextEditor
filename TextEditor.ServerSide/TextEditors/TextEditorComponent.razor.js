@@ -68,16 +68,32 @@ export class TextEditor {
                 cursor.gapElement.style.left = 0;
                 cursor.gapElement.style.top = 0;
 
+                // TODO: single cursor but your edit spans more than one line.
                 // TODO: If you same line multicursor you need to share the virtual line
-                cursor.lineIndex = 0;
+                // TODO: multicursor where each cursor different line
+                this.addVirtualLine(cursor);
             }
             this.editorElement.appendChild(cursor.gapElement);
         }
     }
 
+    addVirtualLine(cursor) {
+        let textElement = this.editorElement.children[this.indexTextImmediateElement];
+        if (cursor.lineIndex < textElement.children.length) {
+            textElement.children[cursor.lineIndex].style.visibility = "hidden";
+        }
+    }
+
+    removeVirtualLine(cursor) {
+        let textElement = this.editorElement.children[this.indexTextImmediateElement];
+        if (cursor.lineIndex < textElement.children.length) {
+            textElement.children[cursor.lineIndex].style.visibility = "";
+        }
+    }
+
     clearEdit(cursor) {
         if (cursor.editKind === EditKind.InsertLtr) {
-            this.editorElement.removeChild(cursor.gapElement);
+            this.removeVirtualLine(cursor);
             cursor.gapElement.innerHTML = '';
         }
         cursor.editKind = EditKind.None;
