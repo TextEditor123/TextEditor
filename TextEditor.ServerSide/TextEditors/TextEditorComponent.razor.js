@@ -6,18 +6,16 @@
 };
 
 class Cursor {
+    static GAP_BUFFER_SIZE = 32;
+
     lineIndex = 0;
     columnIndex = 0;
     positionIndex = 0;
-    gapBuffer = [];
+    
+    gapBuffer = new Uint8Array(Cursor.GAP_BUFFER_SIZE);
     editKind = EditKind.None;
     editPosition = 0;
-
-    /*constructor() {
-        this.lineIndex = 0;
-        this.columnIndex = 0;
-        this.positionIndex = 0;
-    }*/
+    editLength = 0;
 }
 
 export class TextEditor {
@@ -41,6 +39,15 @@ export class TextEditor {
         return this.initializedSuccessfully;
     }
 
+    async finalizeEdit(cursor) {
+        if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
+            cursor.gapBuffer[cursor.editLength] = '\0';
+        }
+        await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.gapBuffer);
+        cursor.editLength = 0;
+        cursor.editKind = EditKind.None;
+    }
+
     registerHandles() {
         let editorElement = document.getElementById(this.htmlId);
         if (!editorElement || editorElement.children.length != this.countWellknownImmediateElements) {
@@ -55,33 +62,20 @@ export class TextEditor {
         // ...In C# they may or may not be cached, but essentially the best thing is to just make a method if it is obviously sensible to do so.
         // So, in JavaScript should I do the same here?
         //
-        editorElement.addEventListener('keydown', event => {
+        editorElement.addEventListener('keydown', async event => {
             /*switch (event.key) {
 
             }*/
 
             if (event.key.length === 1) {
-                if (this.primaryCursor.positionIndex == this.primaryCursor.editPosition + 1) {
-                    this.primaryCursor.gapBuffer.push(event.key);
+                if (this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
+                    this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
+
+                    await this.finalizeEdit(this.primaryCursor);
                 }
                 else {
-                    this.dotNetObjectReference.invokeMethodAsync("InserText", this.primaryCursor.gapBuffer);
-
-                    /*
-                    I'm tempted to say:
-                    > items.splice(0, items.length); // Removes all elements starting from index 0
-
-                    since the "gapBuffer" can't hold a character in JavaScript, only the string.
-                    But perhaps the event keys like 'a', 'b', 'c' are so common that they'll have an optimization in place?
-
-                    Also, as I typed that, I might be able to just store the utf-8 version of the "character"/"event-string-key"
-
-                    'Byte-array interop'
-                    */
-
-                    this.primaryCursor.gapBuffer.
+                    this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
                 }
-                
             }
 
             // TODO: Understand await with respect to the 'invokeMethodAsync'.
