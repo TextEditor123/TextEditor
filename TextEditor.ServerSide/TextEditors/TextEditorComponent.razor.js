@@ -27,6 +27,7 @@ export class TextEditor {
     indexVirtualizationImmediateElement = 1;
     indexTextImmediateElement = 2;
     primaryCursor = new Cursor();
+    editorElement = null;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
@@ -48,15 +49,29 @@ export class TextEditor {
         cursor.editKind = EditKind.None;
     }
 
+    async onKeydown(event) {
+        //let cursorElement = this.editorElement.children[this.indexCursorImmediateElement];
+        //let textElement = this.editorElement.children[this.indexTextImmediateElement];
+
+        if (event.key.length === 1) {
+            if (this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
+                this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
+
+                await this.finalizeEdit(this.primaryCursor);
+            }
+            else {
+                this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
+                this.primaryCursor.editLength++;
+            }
+        }
+    }
+
     registerHandles() {
-        let editorElement = document.getElementById(this.htmlId);
-        if (!editorElement || editorElement.children.length != this.countWellknownImmediateElements) {
+        this.editorElement = document.getElementById(this.htmlId);
+        if (!this.editorElement || this.editorElement.children.length != this.countWellknownImmediateElements) {
             this.initializedSuccessfully = false;
             return;
         }
-
-        let cursorElement = editorElement.children[this.indexCursorImmediateElement];
-        let textElement = editorElement.children[this.indexTextImmediateElement];
 
         // TODO: What impact if any are there in relation to high frequency lambdas?...
         // ...In C# they may or may not be cached, but essentially the best thing is to just make a method if it is obviously sensible to do so.
@@ -72,23 +87,7 @@ export class TextEditor {
           manages the cleanup of these temporary contexts when they are no longer reachable.
         ------------------------------------------------------------------------------------------------------------------------------
         */
-        editorElement.addEventListener('keydown', async event => {
-            /*switch (event.key) {
-
-            }*/
-
-            if (event.key.length === 1) {
-                if (this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
-                    this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
-
-                    await this.finalizeEdit(this.primaryCursor);
-                }
-                else {
-                    this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
-                    this.primaryCursor.editLength++;
-                }
-            }
-        });
+        this.editorElement.addEventListener('keydown', this.onKeydown);
 
         this.initializedSuccessfully = true;
     }
