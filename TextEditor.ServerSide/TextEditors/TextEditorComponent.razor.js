@@ -150,16 +150,16 @@ export class TextEditor {
                             }
                         }
                         else {
-                            let relativeColumnI = spanElement.textContent.length - runColumnI;
-                            let aaaText = spanElement.textContent.substring(0, relativeColumnI + 1);
-                            let bbbText = spanElement.textContent.substring(relativeColumnI + 1);
+                            let relativeColumnI = goalColumnI - runColumnI;
+                            let aaaText = spanElement.textContent.substring(0, relativeColumnI);
+                            let bbbText = spanElement.textContent.substring(relativeColumnI);
                             spanElement.innerHTML = '';
 
                             let aaaElement = document.createElement('span');
                             aaaElement.innerHTML = aaaText;
                             this.virtualLineElement.appendChild(aaaElement);
 
-                            cursor.gapParentElement = spanElement;
+                            cursor.gapParentElement = this.virtualLineElement;
                             this.virtualLineElement.appendChild(cursor.gapElement);
 
                             let bbbElement = document.createElement('span');
