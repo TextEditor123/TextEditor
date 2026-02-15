@@ -142,8 +142,23 @@ export class TextEditor {
                                 break;
                             }
                         }
-                        else if () {
+                        else {
+                            let relativeColumnI = spanElement.textContent.length - runColumnI;
+                            let aaaText = spanElement.textContent.substring(0, relativeColumnI + 1);
+                            let bbbText = spanElement.textContent.substring(relativeColumnI + 1);
+                            spanElement.innerHTML = '';
 
+                            // Here I will do contrary 2x and add to the span cause it works nicely here.
+
+                            let aaaElement = document.createElement('span');
+                            aaaElement.innerHTML = aaaText;
+                            spanElement.appendChild(aaaElement);
+
+                            spanElement.appendChild(cursor.gapElement);
+
+                            let bbbElement = document.createElement('span');
+                            bbbElement.innerHTML = bbbText;
+                            spanElement.appendChild(bbbElement);
                         }
                         break;
                     }
