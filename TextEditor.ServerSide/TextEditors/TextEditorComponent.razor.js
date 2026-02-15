@@ -106,8 +106,16 @@ export class TextEditor {
             // TODO: Eventually spans will be used to group characters and apply syntax highlighting.
             // This isn't written yet so each div is currently just a div with... I can just add a span right now.
             //
-            for (var i = 0; i < originalLine.children cursor.positionIndex; i++) {
-
+            let columnIndex = 0;
+            for (var i = 0; i < originalLine.children.length; i++) {
+                let spanElement = originalLine.children[i];
+                if (columnIndex < columnIndex + spanElement.textContent.length) {
+                    // found the span that contains the to-be insertion split
+                    break;
+                }
+                else {
+                    columnIndex += spanElement.textContent.length;
+                }
             }
         }
 
