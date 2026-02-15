@@ -60,6 +60,9 @@
             //     - However it upon inserting the JavaScript gap buffer into C# would result in that line needing to be
             //           rendered again since the virtual DOM doesn't know the text is actually up to date.
             //     - If it only does a diff though it thinks it needs to insert the text, so it doubles up the text...
+            //     - While in JavaScript you know where the text is going to be inserted, you could perhaps
+            //           make a span alongside the existing one. Then you know when you move the gap buffer contents into C#
+            //           to delete your JavaScript span.
             //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
