@@ -111,3 +111,7 @@ a, .btn-link {
     position: absolute;
     background-color: currentColor;
 }
+
+.te_gap-element {
+    position: absolute;
+}

@@ -64,6 +64,12 @@ export class TextEditor {
         if (editKind == EditKind.InsertLtr) {
             if (!cursor.gapElement) {
                 cursor.gapElement = document.createElement('div');
+                cursor.gapElement.className = 'te_gap-element';
+                cursor.gapElement.style.left = 0;
+                cursor.gapElement.style.top = 0;
+
+                // TODO: If you same line multicursor you need to share the fabricated line
+                cursor.lineIndex = 0;
             }
             this.editorElement.appendChild(cursor.gapElement);
         }
