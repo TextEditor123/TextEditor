@@ -1,4 +1,9 @@
-﻿
+﻿@*
+    See site.css for css
+
+    CSS isolation triggers me cause it has to tag everything with an "id"-ish attribute "b-canv022aum".
+    In this list component I don't want to incur that cost.
+*@
 
 <div class="text-editor-component" id="@_htmlId" tabindex="0">
     
@@ -29,6 +34,10 @@
                     ++indexCharacter; // 'break' won't increment the for loop
                     ++indexLine;
                     break;
+                }
+                else
+                {
+                    <text>@c</text>
                 }
             }
         </div>

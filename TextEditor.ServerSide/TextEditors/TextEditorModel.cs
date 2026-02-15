@@ -4,7 +4,7 @@ namespace TextEditor.ServerSide.TextEditors;
 
 public class TextEditorModel
 {
-    public StringBuilder Builder = new();
+    public StringBuilder Builder = new("abc\n123");
 
     public TextEditorModel()
     {
