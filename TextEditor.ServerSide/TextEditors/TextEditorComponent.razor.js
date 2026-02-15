@@ -138,7 +138,6 @@ export class TextEditor {
                             if (i < this.virtualLineElement.children.length - 1) {
                                 cursor.gapParentElement = this.virtualLineElement;
                                 this.virtualLineElement.insertBefore(cursor.gapElement, this.virtualLineElement.children[i + 1]);
-                                break;
                             }
                             else {
                                 // I said I would put the gapElement within the existing span
@@ -146,7 +145,6 @@ export class TextEditor {
                                 //
                                 cursor.gapParentElement = this.virtualLineElement;
                                 this.virtualLineElement.appendChild(cursor.gapElement);
-                                break;
                             }
                         }
                         else {
@@ -154,6 +152,7 @@ export class TextEditor {
                             let firstText = spanElement.textContent.substring(0, relativeColumnI);
                             let lastText = spanElement.textContent.substring(relativeColumnI);
                             spanElement.innerHTML = '';
+                            this.virtualLineElement.removeChild(spanElement);
 
                             let firstElement = document.createElement('span');
                             firstElement.innerHTML = firstText;
@@ -165,10 +164,6 @@ export class TextEditor {
                             let lastElement = document.createElement('span');
                             lastElement.innerHTML = lastText;
                             this.virtualLineElement.appendChild(lastElement);
-
-                            this.virtualLineElement.removeChild(spanElement);
-
-                            break;
                         }
                         break;
                     }
