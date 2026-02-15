@@ -107,6 +107,7 @@ a, .btn-link {
 
 .te_cursor {
     width: 2.5px;
+    height: 24px;
     position: absolute;
     background-color: currentColor;
 }

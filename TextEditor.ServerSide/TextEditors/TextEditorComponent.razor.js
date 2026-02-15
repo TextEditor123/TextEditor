@@ -54,15 +54,18 @@ export class TextEditor {
         //let textElement = this.editorElement.children[this.indexTextImmediateElement];
 
         if (event.key.length === 1) {
-            if (this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
+            if (this.primaryCursor.editKind != EditKind.InsertLtr ||
+                this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
                 this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
 
                 await this.finalizeEdit(this.primaryCursor);
             }
             else {
-                this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
-                this.primaryCursor.editLength++;
+                // start a new edit
             }
+            
+            this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
+            this.primaryCursor.editLength++;
         }
     }
 
