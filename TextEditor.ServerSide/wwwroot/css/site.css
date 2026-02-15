@@ -96,6 +96,7 @@ a, .btn-link {
     position: relative;
     height: 300px;
     overflow: scroll;
+    font-family: monospace;
 }
 
 .te_virtualization {

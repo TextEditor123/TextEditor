@@ -67,12 +67,11 @@ export class TextEditor {
                 cursor.gapElement.className = 'te_gap-element';
                 cursor.gapElement.style.left = 0;
                 cursor.gapElement.style.top = 0;
-
-                // TODO: single cursor but your edit spans more than one line.
-                // TODO: If you same line multicursor you need to share the virtual line
-                // TODO: multicursor where each cursor different line
-                this.addVirtualLine(cursor);
             }
+            // TODO: single cursor but your edit spans more than one line.
+            // TODO: If you same line multicursor you need to share the virtual line
+            // TODO: multicursor where each cursor different line
+            this.addVirtualLine(cursor);
             this.editorElement.appendChild(cursor.gapElement);
         }
     }
