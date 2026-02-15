@@ -58,7 +58,7 @@ export class TextEditor {
         if (event.key.length === 1) {
 
             if (this.primaryCursor.editKind != EditKind.InsertLtr ||
-                this.primaryCursor.editLength >= this.primaryCursor.gapBufferSize ||
+                this.primaryCursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
                 this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
 
                 if (this.primaryCursor.editKind != EditKind.None) {
@@ -72,6 +72,7 @@ export class TextEditor {
             
             this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
             this.primaryCursor.editLength++;
+            this.primaryCursor.positionIndex++;
         }
     }
 
