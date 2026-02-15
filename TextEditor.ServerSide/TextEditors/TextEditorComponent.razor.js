@@ -53,6 +53,8 @@
             //     - Surely you woudn't want to invoke dotnet interop foreach multicursor when typing character by character?
             //     - Althought perhaps you could maintain a gap buffer in JavaScript.
             //     - Then the non-contiguous edits are sent via dotnet interop...
+            //     - Interestingly, if you did this you'd probably also with JavaScript just modify the text in the span,
+            //           and immediately any new text inherits the contiguous syntax highlighting.
             //
             this.dotNetObjectReference.invokeMethodAsync("OnScroll", this.getListVirtualizationRequest());
         });
