@@ -192,6 +192,12 @@ export class TextEditor {
     }
 
     clearEdit(cursor) {
+        /*
+        // TODO: If this removeVirtualLine was already called from finalizeEdit you don't run it here
+        if (cursor.editKind === EditKind.InsertLtr) {
+            this.removeVirtualLine(cursor);
+        }
+        */
         if (cursor.editKind === EditKind.InsertLtr) {
             this.removeVirtualLine(cursor);
         }
@@ -208,6 +214,10 @@ export class TextEditor {
     // but now you can do whatever you want cause Blazor doesn't know it exists
     // and Blazor doesn't know of style on the original div so it won't clobber anything???
     async finalizeEdit(cursor) {
+        /*if (cursor.editKind === EditKind.InsertLtr) {
+            this.removeVirtualLine(cursor);
+        }
+        */
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
         }
