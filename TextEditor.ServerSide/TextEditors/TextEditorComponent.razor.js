@@ -17,6 +17,8 @@ class Cursor {
     editPosition = 0;
     editLength = 0;
 
+    gapElement = null;
+
     incrementPositionIndexAndUpdateUi(textEditor) {
         this.positionIndex++;
         if (!textEditor.editorElement) return;
@@ -57,6 +59,11 @@ export class TextEditor {
         cursor.editKind = editKind;
         cursor.editPosition = editPosition;
         cursor.editLength = editLength;
+
+        if (editKind == EditKind.InsertLtr) {
+            cursor.gapElement = document.createElement('div');
+            this.editorElement.appendChild(cursor.gapElement);
+        }
     }
 
     clearEdit(cursor) {
@@ -83,6 +90,7 @@ export class TextEditor {
         cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
         cursor.incrementPositionIndexAndUpdateUi(this);
+        cursor.gapElement.innerHTML += event.key;
     }
 
     async onKeydown(event) {
