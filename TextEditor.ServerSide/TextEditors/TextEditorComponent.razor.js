@@ -57,33 +57,34 @@ export class TextEditor {
             cursor.gapBuffer[cursor.editLength] = '\0';
         }
         await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.editPosition, cursor.gapBuffer);
-
         this.clearEdit(cursor);
     }
 
-    InsertCanBatch(cursor) {
+    insertCanBatch(cursor) {
         return cursor.editKind != EditKind.InsertLtr ||
-            cursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
-            cursor.positionIndex !== cursor.editPosition + cursor.editLength;
+               cursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
+               cursor.positionIndex !== cursor.editPosition + cursor.editLength;
     }
 
-    
+    insertDo(cursor) {
+        cursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
+        cursor.editLength++;
+        cursor.positionIndex++;
+    }
 
     async onKeydown(event) {
         //let cursorElement = this.editorElement.children[this.indexCursorImmediateElement];
         //let textElement = this.editorElement.children[this.indexTextImmediateElement];
 
         if (event.key.length === 1) {
-            if (!this.InsertCanBatch(this.primaryCursor)) {
+            if (!this.insertCanBatch(this.primaryCursor)) {
                 if (this.primaryCursor.editKind != EditKind.None) {
                     await this.finalizeEdit(this.primaryCursor);
                 }
                 this.startEdit(cursor=this.primaryCursor, editKind=EditKind.InsertLtr, editPosition=this.primaryCursor.positionIndex, editLength=0);
             }
             
-            this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
-            this.primaryCursor.editLength++;
-            this.primaryCursor.positionIndex++;
+            this.insertDo(this.primaryCursor);
         }
     }
 
