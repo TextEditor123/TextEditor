@@ -63,7 +63,7 @@ export class TextEditor {
         this.clearEdit(cursor);
     }
 
-    insertCanBatch(cursor) {
+    NOTcanBatch_insert(cursor) {
         return cursor.editKind != EditKind.InsertLtr ||
                cursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
                cursor.positionIndex !== cursor.editPosition + cursor.editLength;
@@ -83,7 +83,7 @@ export class TextEditor {
             for (var i = 0; i < this.cursorList.length; i++) {
                 let cursor = this.cursorList[i];
 
-                if (this.insertCanBatch(cursor)) {
+                if (this.NOTcanBatch_insert(cursor)) {
                     if (cursor.editKind != EditKind.None) {
                         await this.finalizeEdit(cursor);
                     }
