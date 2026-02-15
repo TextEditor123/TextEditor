@@ -144,5 +144,7 @@ export class TextEditor {
             //
             sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
         }
+        // TODO: What does 'const' mean.
+        let result = builder.join(""); // The result is "Hello world!"
     }
 }
