@@ -75,6 +75,7 @@ export class TextEditor {
                 }
                 else {
                     this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
+                    this.primaryCursor.editLength++;
                 }
             }
 

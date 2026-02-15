@@ -50,6 +50,19 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
         _model.Builder.Append(key);
         StateHasChanged();
     }
+    
+    [JSInvokable]
+    public Task InserText_ByteArray(byte[] byteArray)
+    {
+        for (int i = 0; i < byteArray.Length; i++)
+        {
+            if (byteArray[i] != '\0')
+                _model.Builder.Append(byteArray[i]);
+        }
+        
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
