@@ -144,21 +144,11 @@ export class TextEditor {
             // FURTHERMORE: I need to revisit calcuating the character width, this is somewhat of an early
             // way I found to get it, perhaps it isn't quite so involved.
             //
-            // This is '7.8813131313131315' ---
-            // now is  '7.8813131313131315'
             sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
-            // this is '100.45...'
-            // now is  '8.909090909090908'
-            // sampleTextBuilder.push("a");
         }
         // TODO: What does 'const' mean.
         measureElement.innerHTML = sampleTextBuilder.join("");
 
-        // TODO: You actually need to test what happens when the measureElement DOESN'T overflow too.
-        // It might measure as the width of the parent in this case.
-        // fit-content?
-
-        //this.characterWidth = measureElement.offsetWidth / (1 * 11);
         this.characterWidth = measureElement.offsetWidth / (36 * 11);
         this.lineHeight = measureElement.offsetHeight;
 
