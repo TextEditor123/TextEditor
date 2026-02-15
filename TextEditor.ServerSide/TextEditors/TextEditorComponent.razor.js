@@ -51,23 +51,27 @@ export class TextEditor {
         cursor.editPosition = 0;
     }
 
+    InsertCanBatch(cursor) {
+        return cursor.editKind != EditKind.InsertLtr ||
+            cursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
+            cursor.positionIndex !== cursor.editPosition + cursor.editLength;
+    }
+
+    startEdit(editKind, editPosition, editLength) {
+
+    }
+
     async onKeydown(event) {
         //let cursorElement = this.editorElement.children[this.indexCursorImmediateElement];
         //let textElement = this.editorElement.children[this.indexTextImmediateElement];
 
         if (event.key.length === 1) {
 
-            if (this.primaryCursor.editKind != EditKind.InsertLtr ||
-                this.primaryCursor.editLength >= Cursor.GAP_BUFFER_SIZE ||
-                this.primaryCursor.positionIndex !== this.primaryCursor.editPosition + this.primaryCursor.editLength) {
-
+            if (!this.InsertCanBatch(this.primaryCursor)) {
                 if (this.primaryCursor.editKind != EditKind.None) {
                     await this.finalizeEdit(this.primaryCursor);
                 }
-
-                this.primaryCursor.editKind = EditKind.InsertLtr;
-                this.primaryCursor.editLength = 0;
-                this.primaryCursor.editPosition = this.primaryCursor.positionIndex;
+                this.startEdit(editKind = EditKind.InsertLtr, editPosition = this.primaryCursor.positionIndex, editLength = 0);
             }
             
             this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
