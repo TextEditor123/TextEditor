@@ -1,8 +1,17 @@
-﻿class Cursor {
+﻿const EditKind = {
+    None: 0,
+    InsertLtr: 1,
+    DeleteLtr: 2,
+    BackspaceRtl: 3,
+};
+
+class Cursor {
     lineIndex = 0;
     columnIndex = 0;
     positionIndex = 0;
     gapBuffer = [];
+    editKind = EditKind.None;
+    editPosition = 0;
 
     /*constructor() {
         this.lineIndex = 0;
@@ -52,8 +61,25 @@ export class TextEditor {
             }*/
 
             if (event.key.length === 1) {
-                this.primaryCursor.gapBuffer.push(event.key);
-                //this.dotNetObjectReference.invokeMethodAsync("OnKeyDown", event.key);
+                if (this.primaryCursor.positionIndex == this.primaryCursor.editPosition + 1) {
+                    this.primaryCursor.gapBuffer.push(event.key);
+                }
+                else {
+                    this.dotNetObjectReference.invokeMethodAsync("InserText", this.primaryCursor.gapBuffer);
+
+                    /*
+                    I'm tempted to say:
+                    > items.splice(0, items.length); // Removes all elements starting from index 0
+
+                    since the "gapBuffer" can't hold a character in JavaScript, only the string.
+                    But perhaps the event keys like 'a', 'b', 'c' are so common that they'll have an optimization in place?
+
+                    Also, as I typed that, I might be able to just store the utf-8 version of the "character"/"event-string-key"
+                    */
+
+                    this.primaryCursor.gapBuffer.
+                }
+                
             }
 
             // TODO: Understand await with respect to the 'invokeMethodAsync'.
