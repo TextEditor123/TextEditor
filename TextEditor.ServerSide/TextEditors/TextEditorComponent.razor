@@ -30,20 +30,22 @@
                 optimization doesn't mean you should just forgo the middle optimization lol?
             *@
             <div @key="indexLine">
-                @for (; indexCharacter < _model.Builder.Length; indexCharacter++)
-                {
-                    var c = _model.Builder[indexCharacter];
-                    if (c == '\n')
+                <span>
+                    @for (; indexCharacter < _model.Builder.Length; indexCharacter++)
                     {
-                        ++indexCharacter; // 'break' won't increment the for loop
-                        ++indexLine;
-                        break;
+                        var c = _model.Builder[indexCharacter];
+                        if (c == '\n')
+                        {
+                            ++indexCharacter; // 'break' won't increment the for loop
+                            ++indexLine;
+                            break;
+                        }
+                        else
+                        {
+                            <text>@c</text>
+                        }
                     }
-                    else
-                    {
-                        <text>@c</text>
-                    }
-                }
+                </span>
             </div>
         }
     </div>

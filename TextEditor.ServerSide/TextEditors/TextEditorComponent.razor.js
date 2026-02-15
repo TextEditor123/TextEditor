@@ -81,8 +81,9 @@ export class TextEditor {
         }
 
         let textElement = this.editorElement.children[this.indexTextImmediateElement];
+
         if (cursor.lineIndex < textElement.children.length) {
-            let textElement = this.editorElement.children[this.indexTextImmediateElement];
+            let originalLine = textElement.children[cursor.lineIndex];
 
             if (!this.virtualLineElement) {
                 this.virtualLineElement = document.createElement('div');
@@ -93,20 +94,24 @@ export class TextEditor {
             }
             
             textElement.children[cursor.lineIndex].style.visibility = "hidden";
+
+
+            // TODO: columnIndex
+            //
+            // ... you know what will cause your line index to change so you don't need
+            // to consult with C# to know the line end positions.
+            //
+            // Part of how you know is the HTML itself for an ArrowRight case.
+            //
+            // TODO: Eventually spans will be used to group characters and apply syntax highlighting.
+            // This isn't written yet so each div is currently just a div with... I can just add a span right now.
+            //
+            for (var i = 0; i < originalLine.children cursor.positionIndex; i++) {
+
+            }
         }
 
         this.editorElement.appendChild(this.virtualLineElement);
-
-        // TODO: columnIndex
-        //
-        // ... you know what will cause your line index to change so you don't need
-        // to consult with C# to know the line end positions.
-        //
-        // Part of how you know is the HTML itself for an ArrowRight case.
-        //
-        for (var i = 0; i < cursor.positionIndex) {
-
-        }
     }
 
     removeVirtualLine(cursor) {
