@@ -47,8 +47,8 @@ export class TextEditor {
         await this.dotNetObjectReference.invokeMethodAsync("InserText_ByteArray", cursor.editPosition, cursor.gapBuffer);
 
         cursor.editKind = EditKind.None;
-        cursor.editLength = 0;
         cursor.editPosition = 0;
+        cursor.editLength = 0;
     }
 
     InsertCanBatch(cursor) {
@@ -57,8 +57,10 @@ export class TextEditor {
             cursor.positionIndex !== cursor.editPosition + cursor.editLength;
     }
 
-    startEdit(editKind, editPosition, editLength) {
-
+    startEdit(cursor, editKind, editPosition, editLength) {
+        cursor.editKind = editKind;
+        cursor.editPosition = editPosition;
+        cursor.editLength = editLength;
     }
 
     async onKeydown(event) {
@@ -66,12 +68,11 @@ export class TextEditor {
         //let textElement = this.editorElement.children[this.indexTextImmediateElement];
 
         if (event.key.length === 1) {
-
             if (!this.InsertCanBatch(this.primaryCursor)) {
                 if (this.primaryCursor.editKind != EditKind.None) {
                     await this.finalizeEdit(this.primaryCursor);
                 }
-                this.startEdit(editKind = EditKind.InsertLtr, editPosition = this.primaryCursor.positionIndex, editLength = 0);
+                this.startEdit(cursor=this.primaryCursor, editKind=EditKind.InsertLtr, editPosition=this.primaryCursor.positionIndex, editLength=0);
             }
             
             this.primaryCursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
