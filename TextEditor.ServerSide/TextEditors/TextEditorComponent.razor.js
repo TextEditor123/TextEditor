@@ -70,7 +70,7 @@ export class TextEditor {
     }
 
     insertDo(cursor) {
-        cursor.gapBuffer[this.primaryCursor.editLength] = event.key.codePointAt(0);
+        cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
         cursor.positionIndex++;
     }
