@@ -155,18 +155,20 @@ export class TextEditor {
                             let bbbText = spanElement.textContent.substring(relativeColumnI + 1);
                             spanElement.innerHTML = '';
 
-                            // Here I will do contrary 2x and add to the span cause it works nicely here.
-
                             let aaaElement = document.createElement('span');
                             aaaElement.innerHTML = aaaText;
-                            spanElement.appendChild(aaaElement);
+                            this.virtualLineElement.appendChild(aaaElement);
 
                             cursor.gapParentElement = spanElement;
-                            spanElement.appendChild(cursor.gapElement);
+                            this.virtualLineElement.appendChild(cursor.gapElement);
 
                             let bbbElement = document.createElement('span');
                             bbbElement.innerHTML = bbbText;
-                            spanElement.appendChild(bbbElement);
+                            this.virtualLineElement.appendChild(bbbElement);
+
+                            this.virtualLineElement.removeChild(spanElement);
+
+                            break;
                         }
                         break;
                     }
@@ -190,6 +192,7 @@ export class TextEditor {
             cursor.gapParentElement.removeChild(cursor.gapElement);
             cursor.gapParentElement = null;
         }
+        cursor.gapElement.innerHTML = '';
         this.virtualLineElement.innerHTML = '';
     }
 
