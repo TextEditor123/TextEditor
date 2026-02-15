@@ -92,8 +92,9 @@ export class TextEditor {
                 this.virtualLineElement.className = 'te_virtual-line';
                 this.virtualLineElement.style.left = 0;
                 this.virtualLineElement.style.top = 0;
-                this.virtualLineElement.innerHTML = originalLine.innerHTML;
             }
+
+            this.virtualLineElement.innerHTML = originalLine.innerHTML;
             
             // TODO: columnIndex
             let goalColumnI = cursor.positionIndex;
@@ -182,7 +183,8 @@ export class TextEditor {
     removeVirtualLine(cursor) {
         let textElement = this.editorElement.children[this.indexTextImmediateElement];
         if (cursor.lineIndex < textElement.children.length) {
-            textElement.children[cursor.lineIndex].style.visibility = "";
+            //textElement.children[cursor.lineIndex].style.visibility = "";
+            textElement.children[cursor.lineIndex].style.visibility = "unset";
         }
         if (cursor.gapParentElement) {
             cursor.gapParentElement.removeChild(cursor.gapElement);
