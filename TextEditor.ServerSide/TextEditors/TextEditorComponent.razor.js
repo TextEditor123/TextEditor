@@ -27,11 +27,14 @@ export class TextEditor {
     indexVirtualizationImmediateElement = 1;
     indexTextImmediateElement = 2;
     primaryCursor = new Cursor();
+    cursorList = new[];
     editorElement = null;
 
     constructor(htmlId, dotNetObjectReference) {
         this.htmlId = htmlId;
         this.dotNetObjectReference = dotNetObjectReference;
+
+        this.cursorList.push(this.primaryCursor);
 
         this.registerHandles();
     }
@@ -77,14 +80,18 @@ export class TextEditor {
         //let textElement = this.editorElement.children[this.indexTextImmediateElement];
 
         if (event.key.length === 1) {
-            if (!this.insertCanBatch(this.primaryCursor)) {
-                if (this.primaryCursor.editKind != EditKind.None) {
-                    await this.finalizeEdit(this.primaryCursor);
+            for (var i = 0; i < this.cursorList.length; i++) {
+                let cursor = this.cursorList[i];
+
+                if (!this.insertCanBatch(cursor)) {
+                    if (cursor.editKind != EditKind.None) {
+                        await this.finalizeEdit(cursor);
+                    }
+                    this.startEdit(cursor = cursor, editKind = EditKind.InsertLtr, editPosition = cursor.positionIndex, editLength = 0);
                 }
-                this.startEdit(cursor=this.primaryCursor, editKind=EditKind.InsertLtr, editPosition=this.primaryCursor.positionIndex, editLength=0);
+
+                this.insertDo(cursor);
             }
-            
-            this.insertDo(this.primaryCursor);
         }
     }
 
