@@ -134,7 +134,7 @@ export class TextEditor {
 
                         //this.virtualLineElement
 
-                        if (runColumnI == runColumnI + spanElement.textContent.length) {
+                        if (goalColumnI == runColumnI + spanElement.textContent.length) {
                             if (i < this.virtualLineElement.children.length - 1) {
                                 cursor.gapParentElement = this.virtualLineElement;
                                 this.virtualLineElement.insertBefore(cursor.gapElement, this.virtualLineElement.children[i + 1]);
