@@ -19,6 +19,7 @@ class Cursor {
 
     // Each cursor needs a span they can write text to.
     gapElement;
+    gapParentElement;
 
     incrementPositionIndexAndUpdateUi(textEditor) {
         this.positionIndex++;
@@ -84,18 +85,16 @@ export class TextEditor {
 
         if (cursor.lineIndex < textElement.children.length) {
             let originalLine = textElement.children[cursor.lineIndex];
+            originalLine.style.visibility = "hidden";
 
             if (!this.virtualLineElement) {
                 this.virtualLineElement = document.createElement('div');
                 this.virtualLineElement.className = 'te_virtual-line';
                 this.virtualLineElement.style.left = 0;
                 this.virtualLineElement.style.top = 0;
-                this.virtualLineElement.innerHTML = textElement.children[cursor.lineIndex].innerHTML;
+                this.virtualLineElement.innerHTML = originalLine.innerHTML;
             }
             
-            textElement.children[cursor.lineIndex].style.visibility = "hidden";
-
-
             // TODO: columnIndex
             let goalColumnI = cursor.positionIndex;
 
@@ -107,11 +106,13 @@ export class TextEditor {
             // (also needs to be explicit due to an empty line)
             //
             if (goalColumnI == 0) {
-                if (originalLine.children.length > 0) {
-                    originalLine.insertBefore(cursor.gapElement, originalLine.children[0]);
+                if (this.virtualLineElement.children.length > 0) {
+                    cursor.gapParentElement = this.virtualLineElement;
+                    this.virtualLineElement.insertBefore(cursor.gapElement, this.virtualLineElement.children[0]);
                 }
                 else {
-                    originalLine.appendChild(cursor.gapElement);
+                    cursor.gapParentElement = this.virtualLineElement;
+                    this.virtualLineElement.appendChild(cursor.gapElement);
                 }
             }
             else {
@@ -121,8 +122,8 @@ export class TextEditor {
                 // Part of how you know is the HTML itself for an ArrowRight case.
                 //
                 let runColumnI = 0;
-                for (var i = 0; i < originalLine.children.length; i++) {
-                    let spanElement = originalLine.children[i];
+                for (var i = 0; i < this.virtualLineElement.children.length; i++) {
+                    let spanElement = this.virtualLineElement.children[i];
                     if (goalColumnI <= runColumnI + spanElement.textContent.length) {
                         // found the span that contains the to-be insertion split
                         // '<=' because end-of-line text insertion.
@@ -130,15 +131,17 @@ export class TextEditor {
                         // The line ending isn't written to the span, it is represented by the encompassing div itself.
                         
                         if (runColumnI == runColumnI + spanElement.textContent.length) {
-                            if (i < originalLine.children.length - 1) {
-                                originalLine.insertBefore(cursor.gapElement, originalLine.children[i + 1]);
+                            if (i < this.virtualLineElement.children.length - 1) {
+                                cursor.gapParentElement = this.virtualLineElement;
+                                this.virtualLineElement.insertBefore(cursor.gapElement, this.virtualLineElement.children[i + 1]);
                                 break;
                             }
                             else {
                                 // I said I would put the gapElement within the existing span
                                 // to inherit the syntax highlighting but this way works better to start with.
                                 //
-                                originalLine.appendChild(cursor.gapElement);
+                                cursor.gapParentElement = this.virtualLineElement;
+                                this.virtualLineElement.appendChild(cursor.gapElement);
                                 break;
                             }
                         }
@@ -154,6 +157,7 @@ export class TextEditor {
                             aaaElement.innerHTML = aaaText;
                             spanElement.appendChild(aaaElement);
 
+                            cursor.gapParentElement = spanElement;
                             spanElement.appendChild(cursor.gapElement);
 
                             let bbbElement = document.createElement('span');
