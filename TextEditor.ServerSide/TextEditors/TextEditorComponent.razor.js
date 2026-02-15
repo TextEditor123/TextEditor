@@ -109,8 +109,11 @@ export class TextEditor {
             let columnIndex = 0;
             for (var i = 0; i < originalLine.children.length; i++) {
                 let spanElement = originalLine.children[i];
-                if (columnIndex < columnIndex + spanElement.textContent.length) {
+                if (columnIndex <= columnIndex + spanElement.textContent.length) {
                     // found the span that contains the to-be insertion split
+                    // '<=' because end-of-line text insertion.
+                    // (end of line but prior to the line ending itself)
+                    // The line ending isn't written to the span, it is represented by the encompassing div itself.
                     break;
                 }
                 else {
