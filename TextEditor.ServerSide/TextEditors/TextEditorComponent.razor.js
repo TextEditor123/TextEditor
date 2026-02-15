@@ -297,7 +297,9 @@ export class TextEditor {
             // FURTHERMORE: I need to revisit calcuating the character width, this is somewhat of an early
             // way I found to get it, perhaps it isn't quite so involved.
             //
-            sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz123456789");
+            sampleTextBuilder.push("abcdefghijklmnopqrstuvwxyz0123456789");
+
+            // I just noticed I missed '0', I was wondering why the cursor was wrong.
         }
         // TODO: What does 'const' mean.
         measureElement.innerHTML = sampleTextBuilder.join("");
