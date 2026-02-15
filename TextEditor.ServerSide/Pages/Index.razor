@@ -12,7 +12,9 @@ Welcome to your new app.
 
 <button class="btn btn-primary" @onclick="AddRandomPersonToListOnClick">Add random Person to List</button>
 
-<ListComponent @ref="_listComponent" TItem="Person" />
+<TextEditorComponent/>
+
+@* <ListComponent @ref="_listComponent" TItem="Person" /> *@
 
 @{
     // I believe this is the correct syntax, but I'm uncertain
@@ -90,7 +92,3 @@ Welcome to your new app.
         return _listComponent.Public_StateHasChangedAsync(totalCount: _personList.Count);
     }
 }
-
-
-@* <TextEditorComponent/> *@
-

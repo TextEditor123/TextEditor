@@ -311,7 +311,7 @@ public partial class ListComponent<TItem> : ComponentBase, IAsyncDisposable
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (_module is not null || _myJsObjectInstance is not null)
+        if (_module is not null || _myJsObjectInstance is not null || _dotNetObjectReference is not null)
         {
             try
             {

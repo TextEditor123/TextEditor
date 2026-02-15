@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Timers;
+using TextEditor.ServerSide.Lists;
 
 namespace TextEditor.ServerSide.TextEditors;
 
@@ -11,19 +13,27 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
 {
     [Inject]
     private IJSRuntime JS { get; set; } = null!;
+    
+    private static int ID_SOURCE;
 
     private IJSObjectReference? _module;
     private IJSObjectReference? _myJsObjectInstance;
+    private DotNetObjectReference<TextEditorComponent>? _dotNetObjectReference;
 
-    public async Task SetTextAsync(string text)
+    private TextEditorModel _model = new();
+
+    private int _id;
+    private string _htmlId;
+
+    private bool _myJsObjectInstanceInitializedSuccessfully;
+    private int _itemHeight;
+    private int _totalCount;
+
+    protected override void OnInitialized()
     {
-        // you don't need "traits" you can still stream from db without objects sitting because you squashed them into the UI
-        // but wait how do you identify later point hmmm maybe traits wasn't idk
-
-        if (_myJsObjectInstance is not null)
-        {
-            await _myJsObjectInstance.InvokeAsync<string>("setText", text);
-        }
+        _id = ID_SOURCE++;
+        _htmlId = $"list-component-{_id}";
+        _dotNetObjectReference = DotNetObjectReference.Create(this);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -32,14 +42,13 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
         {
             // Load the isolated JS module
             _module = await JS.InvokeAsync<IJSObjectReference>("import", "./TextEditors/TextEditorComponent.razor.js");
-            _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor", "aaa");
-            var a = await _myJsObjectInstance.InvokeAsync<string>("getText");
+            _myJsObjectInstance = await _module.InvokeConstructorAsync("TextEditor");
         }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (_module is not null || _myJsObjectInstance is not null)
+        if (_module is not null || _myJsObjectInstance is not null || _dotNetObjectReference is not null)
         {
             try
             {
@@ -50,6 +59,10 @@ public partial class TextEditorComponent : ComponentBase, IAsyncDisposable
                 if (_module is not null)
                 {
                     await _module.DisposeAsync(); // Dispose the module reference
+                }
+                if (_dotNetObjectReference is not null)
+                {
+                    _dotNetObjectReference.Dispose();
                 }
             }
             catch (JSDisconnectedException) // only necessary for server side applications
