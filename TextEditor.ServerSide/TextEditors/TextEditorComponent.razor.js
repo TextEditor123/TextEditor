@@ -254,6 +254,18 @@ export class TextEditor {
         //
         // And just keep repeating this.
 
+        // You might have to synchronize the length of the lines that are being shown.
+        //
+        // ugh virtual line isn't great cause I call the lines you see the virtualization result or virtual lines etc...
+        //
+        // Mouse move you need to calculate the text? or do you?
+        // Yeah you do cause C# doesn't have the gapBuffer.
+        //
+        // So then do you loop through each line's div
+        // then the spans, to sum each span on the line's text length
+        // if you use that text property on the div I presume it lazily causes an allocation
+        // when it fetches from all the children's text.
+
         if () {
 
         }
