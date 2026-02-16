@@ -27,6 +27,12 @@ class Cursor {
     // then you know the next ArrowRight needs to wrap to the next line.
     cursorPositionPerspectiveElement = null;
 
+    // Oh boi I think this might be a bad idea
+    // it's like the List of list editor but squared.
+    divIndexCursorPositionPerspective;
+    spanIndexCursorPositionPerspective;
+    charIndexCursorPositionPerspective;
+
     // This funtion does NOT check whether the new column index is valid.
     incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(textEditor) {
         this.columnIndex++;
@@ -222,10 +228,6 @@ export class TextEditor {
     // but now you can do whatever you want cause Blazor doesn't know it exists
     // and Blazor doesn't know of style on the original div so it won't clobber anything???
     async finalizeEdit(cursor) {
-        /*if (cursor.editKind === EditKind.InsertLtr) {
-            this.removeVirtualLine(cursor);
-        }
-        */
         if (cursor.editLength < Cursor.GAP_BUFFER_SIZE) {
             cursor.gapBuffer[cursor.editLength] = '\0';
         }
