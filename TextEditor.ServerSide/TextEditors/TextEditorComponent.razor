@@ -1,4 +1,5 @@
-﻿@*
+﻿@using System.Text
+@*
     See site.css for css
 
     CSS isolation triggers me cause it has to tag everything with an "id"-ish attribute "b-canv022aum".
@@ -14,6 +15,7 @@
         @{
             var indexCharacter = 0;
             var indexLine = 0;
+            var builder = new StringBuilder(capacity: 128);
         }
 
         @while (indexCharacter < _model.Builder.Length)
@@ -42,7 +44,23 @@
                         }
                         else
                         {
-                            <text>@c</text>
+                            if (builder.Length < 128)
+                            {
+                                builder.Append(c);
+                            }
+                            else
+                            {
+                                <text></text>
+                            }
+                            @:@c
+
+                            @*
+                                <span>
+                                    "a"
+                                    "b"
+                                    "c"
+                                </span>
+                            *@
                         }
                     }
                 </span>

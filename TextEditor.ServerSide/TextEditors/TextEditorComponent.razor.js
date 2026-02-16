@@ -273,9 +273,10 @@ export class TextEditor {
         // if you use that text property on the div I presume it lazily causes an allocation
         // when it fetches from all the children's text.
 
-        if () {
-
+        if (!cursor.gapParentElement) {
+            return;
         }
+
         cursor.incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(this);
     }
 
@@ -315,6 +316,14 @@ export class TextEditor {
         if (!this.editorElement || this.editorElement.children.length != this.countWellknownImmediateElements) {
             this.initializedSuccessfully = false;
             return;
+        }
+
+        let textElement = this.editorElement.children[this.indexTextImmediateElement];
+        if (textElement.children.length > 0) {
+            let divElement = textElement.children[0];
+            if (divElement.children.length > 0) {
+                this.primaryCursor.gapParentElement = divElement.children[0];
+            }
         }
 
         this.measureLineHeightAndCharacterWidth();
