@@ -29,9 +29,14 @@ class Cursor {
 
     // Oh boi I think this might be a bad idea
     // it's like the List of list editor but squared.
-    divIndexCursorPositionPerspective;
-    spanIndexCursorPositionPerspective;
-    charIndexCursorPositionPerspective;
+    //
+    // you don't need these indices you can just move on a "wing it" basis
+    // if your parent is span and you hit the end you know to try incrementing div etc...
+    // but you just move to the next div no reason to track the index.
+    //
+    //divIndexCursorPositionPerspective = 0;
+    //spanIndexCursorPositionPerspective = 0;
+    //charIndexCursorPositionPerspective = 0;
 
     // This funtion does NOT check whether the new column index is valid.
     incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(textEditor) {
