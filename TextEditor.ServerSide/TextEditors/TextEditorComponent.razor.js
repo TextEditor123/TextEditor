@@ -21,7 +21,8 @@ class Cursor {
     gapElement;
     gapParentElement;
 
-    incrementColumnIndexWithSideEffects(textEditor) {
+    // This funtion does NOT check whether the new column index is valid.
+    incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(textEditor) {
         this.columnIndex++;
         this.positionIndex++;
         if (!textEditor.editorElement) return;
@@ -235,7 +236,7 @@ export class TextEditor {
     insertDo(cursor, event) {
         cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
-        cursor.incrementColumnIndexWithSideEffects(this);
+        cursor.incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(this);
         // TODO: This concatenation also isn't all too great
         cursor.gapElement.innerHTML += event.key;
     }
@@ -260,7 +261,7 @@ export class TextEditor {
                 case "ArrowRight":
                     for (var i = 0; i < this.cursorList.length; i++) {
                         let cursor = this.cursorList[i];
-                        cursor.incrementColumnIndexWithSideEffects(this);
+                        cursor.incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(this);
                     }
                     break;
             }
