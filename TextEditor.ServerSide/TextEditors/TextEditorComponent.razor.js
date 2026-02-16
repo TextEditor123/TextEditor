@@ -21,12 +21,13 @@ class Cursor {
     gapElement;
     gapParentElement;
 
-    incrementPositionIndexAndUpdateUi(textEditor) {
+    incrementColumnIndexWithSideEffects(textEditor) {
+        this.columnIndex++;
         this.positionIndex++;
         if (!textEditor.editorElement) return;
 
         let cursorElement = textEditor.editorElement.children[textEditor.indexCursorImmediateElement];
-        cursorElement.style.left = textEditor.characterWidth * this.positionIndex + "px";
+        cursorElement.style.left = textEditor.characterWidth * this.columnIndex + "px";
     }
 }
 
@@ -234,7 +235,7 @@ export class TextEditor {
     insertDo(cursor, event) {
         cursor.gapBuffer[cursor.editLength] = event.key.codePointAt(0);
         cursor.editLength++;
-        cursor.incrementPositionIndexAndUpdateUi(this);
+        cursor.incrementColumnIndexWithSideEffects(this);
         // TODO: This concatenation also isn't all too great
         cursor.gapElement.innerHTML += event.key;
     }
@@ -252,6 +253,16 @@ export class TextEditor {
                 }
 
                 this.insertDo(cursor, event);
+            }
+        }
+        else {
+            switch (event.key) {
+                case "ArrowRight":
+                    for (var i = 0; i < this.cursorList.length; i++) {
+                        let cursor = this.cursorList[i];
+                        cursor.incrementColumnIndexWithSideEffects(this);
+                    }
+                    break;
             }
         }
     }
