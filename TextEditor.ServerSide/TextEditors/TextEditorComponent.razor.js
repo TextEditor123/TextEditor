@@ -21,6 +21,12 @@ class Cursor {
     gapElement;
     gapParentElement;
 
+    // As the cursor moves right, it uses the HTML to determine whether it has to wrap to the next line.
+    //
+    // If its position ever becomes one beyond the final character of the final span within a line's div,
+    // then you know the next ArrowRight needs to wrap to the next line.
+    cursorPositionPerspectiveElement = null;
+
     // This funtion does NOT check whether the new column index is valid.
     incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(textEditor) {
         this.columnIndex++;
@@ -45,11 +51,6 @@ export class TextEditor {
     editorElement = null;
     characterWidth = 1;
     lineHeight = 1;
-    // As the cursor moves right, it uses the HTML to determine whether it has to wrap to the next line.
-    //
-    // If its position ever becomes one beyond the final character of the final span within a line's div,
-    // then you know the next ArrowRight needs to wrap to the next line.
-    cursorPositionPerspectiveElement = null;
 
     // TODO: You might have to overlay the edit, and target oh geez
     // TODO: When the edit is finalized, if it only is a matter of...
@@ -247,6 +248,12 @@ export class TextEditor {
     }
 
     arrowRight(cursor, event) {
+        // Essentially after every Blazor render, the editor
+        // functions entirely in JavaScript, until the next "low frequency event"
+        // synchronizes the state with C# again.
+        //
+        // And just keep repeating this.
+
         if () {
 
         }
