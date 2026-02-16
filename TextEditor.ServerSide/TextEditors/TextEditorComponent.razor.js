@@ -25,8 +25,8 @@ class Cursor {
     incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(textEditor) {
         this.columnIndex++;
         this.positionIndex++;
-        if (!textEditor.editorElement) return;
 
+        if (!textEditor.editorElement) return;
         let cursorElement = textEditor.editorElement.children[textEditor.indexCursorImmediateElement];
         cursorElement.style.left = textEditor.characterWidth * this.columnIndex + "px";
     }
@@ -45,6 +45,11 @@ export class TextEditor {
     editorElement = null;
     characterWidth = 1;
     lineHeight = 1;
+    // As the cursor moves right, it uses the HTML to determine whether it has to wrap to the next line.
+    //
+    // If its position ever becomes one beyond the final character of the final span within a line's div,
+    // then you know the next ArrowRight needs to wrap to the next line.
+    cursorPositionPerspectiveElement = null;
 
     // TODO: You might have to overlay the edit, and target oh geez
     // TODO: When the edit is finalized, if it only is a matter of...
@@ -241,6 +246,13 @@ export class TextEditor {
         cursor.gapElement.innerHTML += event.key;
     }
 
+    arrowRight(cursor, event) {
+        if () {
+
+        }
+        cursor.incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(this);
+    }
+
     async onKeydown(event) {
         if (event.key.length === 1) {
             for (var i = 0; i < this.cursorList.length; i++) {
@@ -261,7 +273,7 @@ export class TextEditor {
                 case "ArrowRight":
                     for (var i = 0; i < this.cursorList.length; i++) {
                         let cursor = this.cursorList[i];
-                        cursor.incrementColumnIndexUncheckedWithPositionAndStyleSideEffects(this);
+                        this.arrowRight(cursor);
                     }
                     break;
             }
